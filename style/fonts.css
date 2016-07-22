@@ -1,16 +1,16 @@
 @font-face {
     font-family: Andika;
-    src: url('fonts/Andika.ttf');
+    src: url('../fonts/Andika.ttf');
 }
 @font-face {
     font-family: Anonymous Pro;
-    src: url('fonts/Anonymous Pro.ttf');
+    src: url('../fonts/Anonymous Pro.ttf');
 }
 @font-face {
     font-family: Bad Script;
-    src: url('fonts/Bad Script.ttf');
+    src: url('../fonts/Bad Script.ttf');
 }
 @font-face {
     font-family: Bad Script;
-    src: url('fonts/Ubuntu.ttf');
+    src: url('../fonts/Ubuntu.ttf');
 }

@@ -22,7 +22,7 @@ body {
 	line-height: 18px;
 	color: #545454;
     background-color: #fff;
-}
+} 
 
 .btn {
 	display: inline-block;
@@ -366,13 +366,13 @@ nav .btn {
 /*--------------canvas------------*/
 #canvases{
     height: 610px;
-    position: relative;
+    /*position: relative;*/
     overflow: hidden;
 }
 
 #canvas-front, #canvas-back{
     z-index: 10;
-    position: absolute;
+    /*position: absolute;*/
     margin: 0 10%;
 }
 /*--------------widgets-----------*/

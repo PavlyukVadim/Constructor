@@ -5,18 +5,18 @@ var canvas, ctx,
     controlsElement,
     controls,
     typeElement,
-    widgets = [];
+    widgets = [],
+    currentTextElement,
+    currentImageElement;
 
 canvas = document.getElementById("canvas");
 canvas.height = 600;
 canvas.width = window.innerWidth * 0.8;
 canvases.style.width = window.innerWidth * 0.8 + 'px'; 
-//ctx = canvas.getContext('2d');
-canvas = new fabric.Canvas('canvas');
-var staticCanvas = new fabric.StaticCanvas('canvas');
 
+var canvas = new fabric.Canvas('canvas');
 
-var mainImgX = (canvas.width) / 2;
+var mainImg, mainImgX = (canvas.width) / 2;
 
 var orderButton = document.getElementsByClassName('order')[0];
 orderButton.onclick = function() {
@@ -49,7 +49,6 @@ orderButton.onclick = function() {
     ?>
 */
 
-
 var dataOfOrder = [];
 
 var modulesArr = [];
@@ -62,60 +61,12 @@ modulesArr.sizesElement = document.getElementById('size');
 modulesArr.imagesElement = document.getElementById('images');
 modulesArr.colorsElement = document.getElementById('colors');
 
-var colorElement = document.getElementById('valueInput');
-colorElement.onchange = function() {
-    console.log(colorElement.value);
-    changeColorMainImage();
-}
-
-var clone = function(imageData) {
-  var canvas, context;
-  canvas = document.createElement('canvas');
-  canvas.width = imageData.width;
-  canvas.height = imageData.height;
-  context = canvas.getContext('2d');
-  context.putImageData(imageData, 0, 0);
-  return context.getImageData(0, 0, imageData.width, imageData.height);
-};
-
-function changeColorMainImage() {
-    var colorThief = new ColorThief();
-    var color = colorThief.getColor(image);
-    var imageData,
-        red, green, blue;  
-     red = parseInt(colorElement.value.slice(0,2), 16);
-     green = parseInt(colorElement.value.slice(2,4), 16);
-     blue = parseInt(colorElement.value.slice(4,6), 16);
-    var newData = clone(imageDataMainImage);
-    for (var i = 0, leng = imageDataMainImage.data.length; i < leng; i+=4){
-        if (imageDataMainImage.data[i + 0] > color[0] - 10 && imageDataMainImage.data[i + 0] < color[0] + 10 &&
-            imageDataMainImage.data[i + 1] > color[1] - 10 && imageDataMainImage.data[i + 1] < color[1] + 10 &&
-            imageDataMainImage.data[i + 2] > color[2] - 10 && imageDataMainImage.data[i + 2] < color[2] + 10) {
-            newData.data[i] = red; 
-            newData.data[i + 1] = green;
-            newData.data[i + 2] = blue;
-            newData.data[i + 3] = 255;   
-        }
-        else {
-            if (imageDataMainImage.data[i] && imageDataMainImage.data[i + 1] && imageDataMainImage.data[i + 2]) {
-                var a = (255 - Math.min(red, green, blue)) / 1.8;
-                newData.data[i + 0] = imageDataMainImage.data[i + 0] - a;  
-                newData.data[i + 1] = imageDataMainImage.data[i + 1] - a;
-                newData.data[i + 2] = imageDataMainImage.data[i + 2] - a;
-                newData.data[i + 3] = 255;    
-            }
-        }
-    }
-    canvas.width = canvas.width;
-    ctx.putImageData(newData, mainImgX - image.width/(2/imgScale), 100);
-}
-
+//Set right retreat all modules
 for (var name in modulesArr) {
     modulesArr[name].style.right =  window.innerWidth * 0.1 + 125 + 'px'; 
 }
-
+//Close all modules
 closer = document.getElementsByClassName("closer");
-
 for (var name in closer) {
    closer[name].onclick = addHandlersCloser(); 
 }
@@ -124,6 +75,62 @@ function addHandlersCloser() {
         hideAllModules();
     } 
 }
+
+var colorElement = document.getElementById('valueInput');
+colorElement.onchange = function() {
+    console.log(colorElement.value);
+    changeColorMainImage();
+}
+function changeColorMainImage() {
+    var colorThief = new ColorThief();
+    var color = colorThief.getColor(image);
+    var imageData,
+        red, green, blue;  
+    red = parseInt(colorElement.value.slice(0,2), 16);
+    green = parseInt(colorElement.value.slice(2,4), 16);
+    blue = parseInt(colorElement.value.slice(4,6), 16);
+    
+    fabric.Image.filters.ChangeColor = fabric.util.createClass({
+        type: 'ChangeColor',
+        applyTo: function(canvasEl) {
+        var context = canvasEl.getContext('2d'),
+        imageData = context.getImageData(0, 0,
+        canvasEl.width, canvasEl.height),
+        data = imageData.data;
+        for (var i = 0, len = data.length; i < len; i += 4) {
+            if (data[i + 0] > color[0] - 10 && data[i + 0] < color[0] + 10 &&
+                data[i + 1] > color[1] - 10 && data[i + 1] < color[1] + 10 &&
+                data[i + 2] > color[2] - 10 && data[i + 2] < color[2] + 10) {
+                data[i] = red; 
+                data[i + 1] = green;
+                data[i + 2] = blue;
+                data[i + 3] = 255;   
+        }
+        else {
+            if (data[i] && data[i + 1] && data[i + 2]) {
+                var a = (255 - Math.min(red, green, blue)) / 1.8;
+                data[i + 0] = data[i + 0] - a;  
+                data[i + 1] = data[i + 1] - a;
+                data[i + 2] = data[i + 2] - a;
+                data[i + 3] = 255;    
+            }
+        }
+        }
+        context.putImageData(imageData, 0, 0);
+        }
+    });
+    canvas.remove(mainImg);
+    fabric.Image.fromURL(image.src, function(img) {
+        img.filters.push(new fabric.Image.filters.ChangeColor());
+        img.applyFilters(canvas.renderAll.bind(canvas));
+        img.set("selectable", false);
+        img.set("left", mainImgX - image.width/(2/imgScale));
+        img.set("top", 100);
+        canvas.add(img);
+        mainImg = img;
+    });    
+}
+
 
 items = document.getElementsByClassName('item');
 controlsElement = document.getElementById('controls');
@@ -156,58 +163,8 @@ widgets['text'] = document.getElementsByClassName('widget-text')[0];
 widgets['layers'] = document.getElementsByClassName('widget-layers')[0];
 widgets['images'] = document.getElementsByClassName('widget-image')[0];
 
-var fontControls = [];
-fontControls['bold'] = widgets['text'].getElementsByClassName('bold')[0];
-fontControls['italic'] = widgets['text'].getElementsByClassName('italic')[0];
-fontControls['underline'] = widgets['text'].getElementsByClassName('underline')[0];
-
-var textAlign = [];
-textAlign['left'] = widgets['text'].getElementsByClassName('align-left')[0];
-textAlign['center'] = widgets['text'].getElementsByClassName('align-center')[0];
-textAlign['right'] = widgets['text'].getElementsByClassName('align-right')[0];
-var fontElement = widgets['text'].getElementsByClassName('font')[0];
-creatingFonts = false;
-
-fontElement.onclick = function() {
-    if (!creatingFonts) {
-        createFonts();
-    }
-    fontList.style.display = 'block';
-}
-var fontsArr = ['Andika', 'Anonymous', 'Bad Script', 'Ubuntu'];
-var fontList = document.getElementsByClassName('font-list')[0];
-
-var textColorElement = document.getElementById('text-color-input');
-textColorElement.onchange = function() {
-    currentTextElement.color = '#' + textColorElement.value;
-    drawTextOnAssistedCanvas();
-}
-
-for (var name in fontControls) {
-    fontControls[name].onclick = addFontControlsHandlers(fontControls[name], 'fontStyle', name, fontControls);
-}
-for (var name in textAlign) {
-    textAlign[name].onclick = addFontControlsHandlers(textAlign[name], 'textAlign', name, textAlign);
-}
-
-function addFontControlsHandlers(element, type, style, arr) {
-    return function() {
-        for (var name in arr) {
-            if(name != style) {
-                arr[name].classList.remove('active');   
-            }
-        }
-        if (element.classList.contains('active')) {
-            element.classList.remove('active');
-            currentTextElement[type] = '';
-        }
-        else {
-            element.classList.add('active');
-            currentTextElement[type] = style;
-        }
-        drawTextOnAssistedCanvas();
-    }
-}
+var fontsArr = ['Andika', 'Anonymous', 'Bad Script', 'Ubuntu'],
+    fontList = document.getElementsByClassName('font-list')[0];
 
 function showComposition() {
     widgets['layers'].style.display = 'block';
@@ -215,20 +172,6 @@ function showComposition() {
     widgets['images'].style.display = 'none';
 }
 
-function showDetails() {
-    widgetElement.style.display = 'block';
-    widgets['layers'].style.display = 'none';
-    if (currentTextElement) {
-        widgets['text'].style.display = 'block';
-        widgets['images'].style.display = 'none';
-        textArea.value = currentTextElement.value;
-        
-    }
-    else if (currentImageElement) {
-        widgets['images'].style.display = 'block';
-        widgets['text'].style.display = 'none';
-    }       
-}
 
 var texts = [];
 var images = [];
@@ -247,81 +190,56 @@ chooseFile.onchange = function() {
     reader.readAsDataURL(file);
 };
 
-//var canvasPosition = canvas.getBoundingClientRect();
-var mouseX = 0, mouseY = 0;
-var currentTextElement;
-var currentImageElement;
-
 var AddTextElement = document.getElementsByClassName('text')[0];
 var AddImageElement = document.getElementsByClassName('image')[0];
 
 AddTextElement.onclick = function() {
-    
-    showDetails();
-    createDetailsElements('text', currentTextElement, currentTextElement);
+    var text = new fabric.Text('Мой текст', { left: mainImgX - 90, top: 150 });
+    canvas.add(text);
+    createDetailsElements('text', text);
+    showDetails('text', text);
+    canvas.setActiveObject(text);
+    currentTextElement = text;
 };
 
-var transElements = document.getElementsByClassName('trans')[0],
-    transArr = [];
-transArr['canvas-text'] = document.getElementsByClassName('canvas-text')[0];
-
-
-function showAssistedCanvas() {
-    transElements.style.border = null;
-    showAllTrans();
-    if (currentTextElement) {
-        transElements.style.width = currentTextElement.maxWidth * currentTextElement.scale + 'px';
-        transElements.style.height = currentTextElement.textHeight * currentTextElement.scale + 'px';
-        transElements.style.marginLeft = '10%';
-        transElements.style.left = currentTextElement.x + 'px';
-        transElements.style.top = currentTextElement.y + 'px';
-        transElements.style.transform = 'rotate('+currentTextElement.angle+'deg)';
-        assistedTextCanvas.width = currentTextElement.maxWidth * currentTextElement.scale;
-        assistedTextCanvas.height = currentTextElement.textHeight * currentTextElement.scale;
-        drawTextOnAssistedCanvas();
-        drawAllTextElements();
-        drawAllImgElements();
+function showDetails(type, element) {
+    widgetElement.style.display = 'block';
+    widgets['layers'].style.display = 'none';
+    if (type == 'text') {
+        widgets['text'].style.display = 'block';
+        widgets['images'].style.display = 'none';
+        textArea.value = element.text;
+        
     }
-    else if (currentImageElement) {
-        transElements.style.width = currentImageElement.image.width * currentImageElement.scale + 'px';
-        transElements.style.height = currentImageElement.image.height * currentImageElement.scale + 'px';
-        transElements.style.marginLeft = '10%';
-        transElements.style.left = currentImageElement.x  + 'px';
-        transElements.style.top = currentImageElement.y + 'px';
-        transElements.style.transform = 'rotate('+currentImageElement.angle+'deg)';
-        assistedTextCanvas.width = currentImageElement.image.width * currentImageElement.scale;
-        assistedTextCanvas.height = currentImageElement.image.height * currentImageElement.scale;
-        currentImageElement.drawOnAssistedCanvas();
-        drawAllImgElements();
-        drawAllTextElements();
-    }
+    else if (type == 'images') {
+        widgets['images'].style.display = 'block';
+        widgets['text'].style.display = 'none';
+    }       
 }
 
-
-
-function showAllTrans() {
-    transElements.style.display = "block";
-    for (var name in transArr) {
-        if (name != 'circle') {
-            transArr[name].style.display = "block";
+// get current element
+document.onclick = function() {
+    if (canvas.getActiveObject()) {
+        if (canvas.getActiveObject().text) {
+            currentTextElement = canvas.getActiveObject();
+            textArea.value = currentTextElement.text;  
+            widgets['layers'].style.display = 'none';
+            widgets['text'].style.display = 'block';
+            widgets['images'].style.display = 'none';
         }
     }
-}
-function hideAllTrans() {
-    transElements.style.display = "none";
-    transElements.style.border = 'none';
-    for (var name in transArr) {
-        if (name != 'circle') {
-            transArr[name].style.display = "none";
-        }
+    else {
+        widgets['layers'].style.display = 'block';
+        widgets['text'].style.display = 'none';
+        widgets['images'].style.display = 'none';
     }
 }
 
 var textArea = document.getElementById('input-text');
 textArea.oninput = function() {
-    currentTextElement.value = textArea.value;
-    definitionSizeAssistedCanvas();
-    drawTextOnAssistedCanvas();
+    canvas.setActiveObject(currentTextElement);
+    currentTextElement.text = textArea.value;
+    canvas.setActiveObject(currentTextElement);
     var layers = document.getElementsByClassName('layers-list')[0].getElementsByClassName('text');
     for (var i = 0; i < layers.length; i++) {
         if (layers[i].element == currentTextElement) {
@@ -330,8 +248,70 @@ textArea.oninput = function() {
             break;
         }
     }
-   
 }; 
+
+
+var fontControls = [];
+fontControls['bold'] = widgets['text'].getElementsByClassName('bold')[0];
+fontControls['italic'] = widgets['text'].getElementsByClassName('italic')[0];
+var underLineElement = widgets['text'].getElementsByClassName('underline')[0];
+var textAlign = [];
+textAlign['left'] = widgets['text'].getElementsByClassName('align-left')[0];
+textAlign['center'] = widgets['text'].getElementsByClassName('align-center')[0];
+textAlign['right'] = widgets['text'].getElementsByClassName('align-right')[0];
+var fontElement = widgets['text'].getElementsByClassName('font')[0];
+creatingFonts = false;
+
+fontElement.onclick = function() {
+    if (!creatingFonts) {
+        createFonts();
+    }
+    fontList.style.display = 'block';
+}
+
+var textColorElement = document.getElementById('text-color-input');
+textColorElement.onchange = function() {
+    currentTextElement.setColor('#' + textColorElement.value);
+    canvas.setActiveObject(currentTextElement);
+}
+
+for (var name in fontControls) {
+    fontControls[name].onclick = addFontAlignHandlers(fontControls[name], 'fontStyle', name, fontControls);
+}
+for (var name in textAlign) {
+    textAlign[name].onclick = addFontAlignHandlers(textAlign[name], 'textAlign', name, textAlign);
+}
+// Choose font or text-align
+function addFontAlignHandlers(element, type, style, arr) {
+    return function() {
+        canvas.setActiveObject(currentTextElement);
+        for (var name in arr) {
+            if(name != style) {
+                arr[name].classList.remove('active');   
+            }
+        }
+        if (element.classList.contains('active')) {
+            element.classList.remove('active');
+            currentTextElement[type] = '';
+        }
+        else {
+            element.classList.add('active');
+            currentTextElement[type] = style;
+        }
+        canvas.setActiveObject(currentTextElement);
+    }
+}
+underLineElement.onclick = function() {
+    if (underLineElement.classList.contains('active')) {
+        underLineElement.classList.remove('active');
+        currentTextElement['textDecoration'] = '';
+    }
+    else {
+        underLineElement.classList.add('active');
+        currentTextElement['textDecoration'] = 'underline';
+    }
+    canvas.setActiveObject(currentTextElement);
+};
 
 hideSelectedElements();
 function hideSelectedElements() {
@@ -448,17 +428,24 @@ for (var item in items) {
     items[item].onclick = addHandlerItems(items[item]);   
 }
 
+// click on products
 function addHandlerItems(item) {
     return function () {
-        canvas.width = canvas.width;
         image = new Image();
         image.src = item.getElementsByTagName('img')[0].src;
-        imgScale = (canvas.width / 2) / image.width < 
-            (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
-        
-        ctx.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
-        imageDataMainImage = ctx.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
-        
+        imgScale = (canvas.width / 2) / image.width < (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
+        if (mainImg) {
+            canvas.remove(mainImg);    
+        }
+        console.log(imgScale);
+        fabric.Image.fromURL(image.src, function(img) {
+            img.scale(imgScale);
+            img.set("selectable", false);
+            img.set("left", mainImgX - (image.width / 2) * (imgScale));
+            img.set("top", 100);
+            canvas.add(img);
+            mainImg = img;
+        });
         hideSelectedElements();
         var name = item.getElementsByClassName('item-name')[0].textContent;
         selectedElements['base'].style.display = 'inline-block';
@@ -471,7 +458,7 @@ function addHandlerItems(item) {
         displayControls(dataOfItemControls, item);
     }
 }
-
+// select type of products
 function addHandlerImageModule(item, module, className = 'item-name') {
     return function () {
         canvas.width = canvas.width;
@@ -482,10 +469,15 @@ function addHandlerImageModule(item, module, className = 'item-name') {
         image.src = item.getElementsByTagName('img')[0].src;
         imgScale = (canvas.width / 2) / image.width < 
             (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
-        
-        ctx.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
-        dataOfOrder[module] = name;
-        imageDataMainImage = ctx.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
+        canvas.remove(mainImg);
+        fabric.Image.fromURL(image.src, function(img) {
+            img.scale(imgScale);
+            img.set("selectable", false);
+            img.set("left", mainImgX - image.width/(2/imgScale));
+            img.set("top", 100);
+            canvas.add(img);
+            mainImg = img;
+        });
         hideAllModules();
     }
 }
@@ -643,7 +635,7 @@ function createImageModule(image) {
     modulesArr.imagesElement.appendChild(div);
 }
 
-function createDetailsElements(type, element, currentImageElement) {
+function createDetailsElements(type, element) {
     var info, h4, img, layersList, layer, content, imgDiv;
     layersList = document.getElementsByClassName('layers-list')[0];
     layer = document.createElement('div');
@@ -658,7 +650,7 @@ function createDetailsElements(type, element, currentImageElement) {
         info.classList.add('info');
         h4 = document.createElement('h4');
         h4.classList.add('name-details');
-        h4.innerHTML = element.value;
+        h4.innerHTML = element.text;
         info.appendChild(h4);
         content.appendChild(imgDiv);
         content.appendChild(info);
@@ -707,13 +699,9 @@ function addImageLayerHandler(element){
 
 function addTextLayerHandler(element){
     return function() {
-        showDetails(); 
         currentTextElement = element;
-        canvasFront.width = canvasFront.width;
-        drawAllImgElements();
-        drawAllTextElements();
-        showAssistedCanvas();
-        showDetails();
+        showDetails(); 
+        canvas.setActiveObject(currentTextElement);
     }
 }
 
@@ -739,8 +727,7 @@ function addHandlerFonts(element, font){
             fonts[i].classList.remove('active');
         }
         element.classList.add('active');
-        currentTextElement.font = font;
-        console.log(currentTextElement);
-        drawTextOnAssistedCanvas();
+        currentTextElement.fontFamily = font;
+        canvas.setActiveObject(currentTextElement);
     }
 }
