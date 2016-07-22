@@ -1,40 +1,22 @@
-var canvasFront, ctxf,
-    canvasBack, ctxb,
+var canvas, ctx,
     ctxt,
     items, closer,
     itemsElement, 
     controlsElement,
     controls,
     typeElement,
-    widgets = [],
-    mouseDowmX, mouseDowmY,
-    mouseUpX, mouseUpY,
-    radians = 0, degree = 0,
-    rotateDownX, rotateDownY,
-    imageDataImageOnAssistedCanvas,
-    imageDataImageOnFrontCanvas,
-    offsetX = 0, offsetY = 0,
-    scaleDownX, scaleDownY,
-    currentTextData,
-    currentTextImg;
+    widgets = [];
 
-canvasFront = document.getElementById("canvas-front");
-canvasFront.height = 600;
-canvasFront.width = window.innerWidth * 0.8;
+canvas = document.getElementById("canvas");
+canvas.height = 600;
+canvas.width = window.innerWidth * 0.8;
 canvases.style.width = window.innerWidth * 0.8 + 'px'; 
-ctxf = canvasFront.getContext('2d');
+//ctx = canvas.getContext('2d');
+canvas = new fabric.Canvas('canvas');
+var staticCanvas = new fabric.StaticCanvas('canvas');
 
-canvasBack = document.getElementById("canvas-back");
-canvasBack.height = 600;
-canvasBack.width = window.innerWidth * 0.8;
-ctxb = canvasBack.getContext('2d');
 
-var mainImgX = (canvasFront.width) / 2;
-
-function clearCanvases() {
-    canvasBack.width = canvasBack.width;
-    canvasFront.width = canvasFront.width;
-}
+var mainImgX = (canvas.width) / 2;
 
 var orderButton = document.getElementsByClassName('order')[0];
 orderButton.onclick = function() {
@@ -124,8 +106,8 @@ function changeColorMainImage() {
             }
         }
     }
-    canvasBack.width = canvasBack.width;
-    ctxb.putImageData(newData, mainImgX - image.width/(2/imgScale), 100);
+    canvas.width = canvas.width;
+    ctx.putImageData(newData, mainImgX - image.width/(2/imgScale), 100);
 }
 
 for (var name in modulesArr) {
@@ -251,108 +233,6 @@ function showDetails() {
 var texts = [];
 var images = [];
 
-function Text(text, x, y, font, fontSize) {
-    this.value = text;
-    this.x = x;
-    this.y = y;
-    this.fontSize = fontSize;
-    this.font = font;
-    this.fontStyle = '';
-    this.textAlign = '';
-    this.maxWidth = image.width * imgScale;
-    this.lineHeight = fontSize; 
-    this.height = fontSize;
-    this.color = '#000';
-    this.angle = 0;
-    this.textHeight = 0;
-    this.scale = 1;
-}
-Text.prototype.drawOnMainCanvas = function() {
-    if(this.angle) {
-        ctxf.save();
-        ctxf.translate(this.x + this.maxWidth / 2, this.y + this.textHeight / 2);
-        ctxf.rotate(this.angle * Math.PI / 180);
-        ctxf.drawImage(currentTextImg, -this.maxWidth / 2, -this.textHeight / 2);    
-        ctxf.restore();
-    }
-    else {
-        ctxf.drawImage(currentTextImg, this.x, this.y);    
-    }    
-}
-Text.prototype.stroke = function() {
-    this.height = this.lineHeight;
-    this.width = 0;
-    var y = this.y;
-    ctxf.font = this.font;
-    
-    ctxf.strokeStyle = '#f90';
-    ctxf.lineWidth = 3;
-    
-    var lines = this.value.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-        var line = "";
-        var words = lines[i].split(" ");
-
-        for (var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + " ";
-            var metrics = ctxf.measureText(testLine);
-            var testWidth = metrics.width;
-
-            if (testWidth > this.maxWidth) {
-                ctxf.strokeText(line, this.x, y);
-                line = words[n] + " ";
-                y += this.lineHeight;
-                this.height += this.lineHeight;
-            }
-            else {
-                this.width = testWidth > this.width ? testWidth : this.width;
-                line = testLine;
-            }
-        }
-        ctxf.strokeText(line, this.x, y);
-        this.height += this.lineHeight;
-        y += this.lineHeight;
-    }
-    ctxf.strokeRect(this.x, this.y - this.fontSize * 1.5, this.width, this.height);
-}
-
-function Img(image, x, y) {
-    this.image = image;
-    this.x = x;
-    this.y = y;
-    this.scale = 1;
-}
-Img.prototype.drawOnAssistedCanvas = function() {
-    ctxt.width = ctxt.width;
-    ctxt.drawImage(this.image, 0, 0, this.image.width * this.scale, this.image.height * this.scale);
-    
-    /*---------- Opacity for image -------------*/
-    /*imageDataImageOnAssistedCanvas = ctxt.getImageData(0, 0, this.image.width, this.image.height);
-    imageDataImageOnFrontCanvas = ctxb.getImageData(Math.ceil(this.x), this.y, this.image.width, this.image.height);  
-    var newImageDataImageOnAssistedCanvas= clone(imageDataImageOnAssistedCanvas);
-    
-    for (var i = 0, leng = newImageDataImageOnAssistedCanvas.data.length; i < leng; i+=4){
-        if (!imageDataImageOnFrontCanvas.data[i] && !imageDataImageOnFrontCanvas.data[i + 1] && !imageDataImageOnFrontCanvas.data[i + 2] &&
-            newImageDataImageOnAssistedCanvas.data[i] && newImageDataImageOnAssistedCanvas.data[i + 1] && newImageDataImageOnAssistedCanvas.data[i + 2]) {
-            newImageDataImageOnAssistedCanvas.data[i + 3] = 75;   
-        }
-    }
-    ctxt.putImageData(newImageDataImageOnAssistedCanvas, 0, 0); 
-    */
-};
-Img.prototype.drawOnMainCanvas = function() {
-    if (this.angle) {
-        ctxf.save();
-        ctxf.translate(this.x + (this.image.width / 2) * this.scale, this.y + (this.image.height / 2) * this.scale);
-        ctxf.rotate(this.angle * Math.PI/180);
-        ctxf.drawImage(this.image, -(this.image.width / 2) * this.scale , -(this.image.height / 2) * this.scale, this.image.width * this.scale, this.image.height * this.scale);
-        ctxf.restore();
-    }
-    else {
-        ctxf.drawImage(this.image, this.x, this.y, this.image.width * this.scale, this.image.height * this.scale);    
-    }
-};
-
 
 var chooseFile = document.getElementById('choose-file');
 chooseFile.onchange = function() {
@@ -367,7 +247,7 @@ chooseFile.onchange = function() {
     reader.readAsDataURL(file);
 };
 
-var canvasPosition = canvasFront.getBoundingClientRect();
+//var canvasPosition = canvas.getBoundingClientRect();
 var mouseX = 0, mouseY = 0;
 var currentTextElement;
 var currentImageElement;
@@ -376,12 +256,7 @@ var AddTextElement = document.getElementsByClassName('text')[0];
 var AddImageElement = document.getElementsByClassName('image')[0];
 
 AddTextElement.onclick = function() {
-    texts.push(new Text('Мой текст', mainImgX - image.width/(2/imgScale), 100, 'Arial', 60));
-    currentTextElement = texts[texts.length - 1];
-    showAllTrans();
-    showAssistedCanvas();
-    definitionSizeAssistedCanvas();
-    drawTextOnAssistedCanvas();
+    
     showDetails();
     createDetailsElements('text', currentTextElement, currentTextElement);
 };
@@ -389,146 +264,7 @@ AddTextElement.onclick = function() {
 var transElements = document.getElementsByClassName('trans')[0],
     transArr = [];
 transArr['canvas-text'] = document.getElementsByClassName('canvas-text')[0];
-var assistedTextCanvas = transArr['canvas-text'];
-ctxt = transArr['canvas-text'].getContext('2d');
-transArr['rotate'] = document.getElementsByClassName('rotate')[0];
-transArr['scale'] = document.getElementsByClassName('scale')[0];
-transArr['remove'] = document.getElementsByClassName('remove')[0];
-transArr['duplicate'] = document.getElementsByClassName('duplicate')[0];
 
-assistedTextCanvas.onmouseup = function(e) {
-    dragble = false;
-    mouseUpX = e.clientX;
-    mouseUpY = e.clientY;
-    mouseDowmX = 0;
-    mouseDowmY = 0;
-};
-assistedTextCanvas.onmousedown = function(e) {
-    dragble = true;
-    mouseUpX = 0;
-    mouseUpY = 0;
-    mouseDowmX = e.clientX;
-    mouseDowmY = e.clientY;
-    assistedCanvasPosition = assistedTextCanvas.getBoundingClientRect();
-    degree = degree > 0 ? degree : 360 + degree; 
-    var rad = (Math.PI / 180) * degree;
-    var offsetRotationX = (image.width / 2 - (image.width / 2) * Math.cos(rad));
-    
-    offsetX = mouseDowmX - assistedCanvasPosition.left + offsetRotationX; 
-    offsetY = mouseDowmY - assistedCanvasPosition.top;
-};
-
-var dragble = false;
-
-function definitonCurrentTextElement() {
-    var definedImageElement = false;
-    var definedTextElement = false;
-    for (var i = 0; i < texts.length; i++) {
-        	ctxf.beginPath();
-            if (texts[i].angle) {
-                ctxf.save();
-                ctxf.translate(texts[i].x + texts[i].maxWidth / 2, texts[i].y + texts[i].textHeight / 2);
-                ctxf.rotate(texts[i].angle * Math.PI / 180);
-                ctxf.rect(-texts[i].maxWidth / 2, -texts[i].textHeight / 2, texts[i].maxWidth, texts[i].textHeight);    
-            }
-            else {
-                ctxf.save();
-                ctxf.rect(texts[i].x, texts[i].y, texts[i].maxWidth, texts[i].textHeight);
-            }
-            ctxf.closePath();        
-        if (ctxf.isPointInPath(mouseX, mouseY)) {
-                definedTextElement = true;
-                currentTextElement = texts[i];
-                canvasFront.width = canvasFront.width;
-                showAssistedCanvas();
-                showDetails();
-        }
-        ctxf.restore();
-    }
-    for (var i = 0; i < images.length; i++) {
-        	ctxf.beginPath();
-            ctxf.rect(images[i].x, images[i].y, images[i].image.width * images[i].scale, images[i].image.height * images[i].scale);
-            ctxf.closePath();        
-        if (ctxf.isPointInPath(mouseX, mouseY)) {
-                definedImageElement = true;
-                transferCurrentElement();
-                currentImageElement = images[i];
-                canvasFront.width = canvasFront.width;
-                showAssistedCanvas();
-        }
-    }
-    if (!definedImageElement && currentImageElement) {
-        transferCurrentElement();
-        currentImageElement = undefined;
-    }
-    if (!definedTextElement && currentTextElement) {
-        transferCurrentElement();
-        currentTextElement = undefined;
-    }
-};
-
-function transferCurrentElement() {
-    if (currentImageElement) {
-        currentImageElement.drawOnMainCanvas();
-    }
-    if (currentTextElement) {
-        currentTextElement.drawOnMainCanvas();
-    }
-    fontList.style.display = 'none';
-    hideAllTrans();
-    showComposition();
-}
-
-canvasFront.addEventListener('click', definitonCurrentTextElement);
-
-canvasFront.onmousemove = function(e) {
-    mouseX = e.clientX - canvasPosition.left;
-    mouseY = e.clientY - canvasPosition.top;
-}
-
-document.onmousemove = function(e) {
-    var frontCanvasPosition = canvasFront.getBoundingClientRect();
-    if (dragble && currentTextElement) { 
-        transElements.style.left = e.clientX - frontCanvasPosition.left - offsetX +  'px';
-        transElements.style.top = e.clientY - frontCanvasPosition.top - offsetY + 'px';
-        currentTextElement.x = e.clientX - frontCanvasPosition.left - offsetX;
-        currentTextElement.y = e.clientY - frontCanvasPosition.top - offsetY;
-        console.log(currentTextElement);
-    }
-    else if (dragble && currentImageElement) {
-        transElements.style.left = e.clientX - frontCanvasPosition.left - offsetX +  'px';
-        transElements.style.top = e.clientY - frontCanvasPosition.top - offsetY + 'px';
-        currentImageElement.x = e.clientX - frontCanvasPosition.left - offsetX + 27;
-        currentImageElement.y = e.clientY - frontCanvasPosition.top - offsetY; 
-        console.log(currentImageElement);
-    }
-};
-
-document.onmouseup = function() {
-    dragble = false;
-    document.removeEventListener('mousemove', rotateCanvasEvent);
-    document.removeEventListener('mousemove', scaleCanvasEvent);
-}
-transElements.onmouseup = function() {
-    dragble = false;
-    document.removeEventListener('mousemove', rotateCanvasEvent);  
-}
-
-function drawAllImgElements() {
-    for (var i = 0; i < images.length; i++){
-       if (images[i] != currentImageElement){
-            images[i].drawOnMainCanvas();
-           console.log(images[i]);
-       }
-    }
-}
-function drawAllTextElements() {
-    for (var i = 0; i < texts.length; i++){
-       if (texts[i] != currentTextElement){
-            texts[i].drawOnMainCanvas();
-       }
-    }
-}
 
 function showAssistedCanvas() {
     transElements.style.border = null;
@@ -561,125 +297,6 @@ function showAssistedCanvas() {
     }
 }
 
-function drawTextOnAssistedCanvas() {
-    assistedTextCanvas.width = currentTextElement.maxWidth * currentTextElement.scale;
-    assistedTextCanvas.height = (currentTextElement.height - currentTextElement.fontSize + 15) * currentTextElement.scale;
-    transElements.style.width = currentTextElement.maxWidth * currentTextElement.scale + 'px';
-    transElements.style.height = (currentTextElement.height - currentTextElement.fontSize + 15) * currentTextElement.scale +'px';
-    
-    currentTextElement.height = currentTextElement.lineHeight * currentTextElement.scale;
-    assistedTextCanvas.width = assistedTextCanvas.width; 
-    currentTextElement.width = 0;
-    var y = currentTextElement.fontSize * currentTextElement.scale;
-    var x = 10;
-    ctxt.font = currentTextElement.fontStyle + ' ' + currentTextElement.fontSize * currentTextElement.scale + 'px' + ' ' + currentTextElement.font;
-    
-    ctxt.fillStyle = currentTextElement.color;
-    ctxt.strokeStyle = '#f90';
-    ctxt.lineWidth = 4;
-    ctxt.lineCap = 'round';
-    ctxt.lineJoin = 'round';
-    ctxt.textAlign = currentTextElement.textAlign;
-    if (currentTextElement.textAlign == 'left') {
-        x = 10;
-    }
-    else if (currentTextElement.textAlign == 'center') {
-        x = (currentTextElement.maxWidth / 2) * currentTextElement.scale;
-    }
-    else if (currentTextElement.textAlign == 'right') {
-        x = currentTextElement.maxWidth * currentTextElement.scale;
-    }
-    var lines = currentTextElement.value.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-        var line = "";
-        var words = lines[i].split(" ");
-
-        for (var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + " ";
-            var metrics = ctxt.measureText(testLine);
-            var testWidth = metrics.width;
-
-            if (testWidth > currentTextElement.maxWidth * currentTextElement.scale) {
-                ctxt.fillText(line, x, y);
-                line = words[n] + " ";
-                y += currentTextElement.lineHeight * currentTextElement.scale;
-                currentTextElement.height += currentTextElement.lineHeight * currentTextElement.scale;
-                currentTextElement.width = ctxt.measureText(line).width > currentTextElement.width ? ctxt.measureText(line).width : currentTextElement.width; 
-            }
-            else {
-                line = testLine;
-            }
-        }
-        ctxt.fillText(line, x, y);
-        currentTextElement.width = ctxt.measureText(line).width > currentTextElement.width ? ctxt.measureText(line).width : currentTextElement.width; 
-        currentTextElement.height += currentTextElement.lineHeight * currentTextElement.scale;
-        y += currentTextElement.lineHeight * currentTextElement.scale;
-    } 
-    currentTextElement.textHeight = y - currentTextElement.lineHeight * currentTextElement.scale;
-    currentTextImg = new Image();
-    currentTextImg.src = assistedTextCanvas.toDataURL();
-}
-function definitionSizeAssistedCanvas() {
-    currentTextElement.height = currentTextElement.lineHeight;
-    assistedTextCanvas.width = assistedTextCanvas.width; 
-    currentTextElement.width = 0;
-    var y = currentTextElement.fontSize;
-    var x = 10;
-    ctxt.font = currentTextElement.fontStyle + ' ' + currentTextElement.fontSize + 'px' + ' ' + currentTextElement.font;
-    
-    ctxt.strokeStyle = '#f90';
-    ctxt.lineWidth = 4;
-    ctxt.lineCap = 'round';
-    ctxt.lineJoin = 'round';
-    ctxt.textAlign = currentTextElement.textAlign;
-    if (currentTextElement.textAlign == 'left') {
-        x = 10;
-    }
-    else if (currentTextElement.textAlign == 'center') {
-        x = currentTextElement.maxWidth / 2;
-    }
-    else if (currentTextElement.textAlign == 'right') {
-        x = currentTextElement.maxWidth;
-    }
-    
-    ctxt.strokeStyle = '#f90';
-    ctxt.lineWidth = 4;
-    ctxt.lineCap = 'round';
-    ctxt.lineJoin = 'round';
-    
-    var lines = currentTextElement.value.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-        var line = "";
-        var words = lines[i].split(" ");
-
-        for (var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + " ";
-            var metrics = ctxt.measureText(testLine);
-            var testWidth = metrics.width;
-
-            if (testWidth > currentTextElement.maxWidth) {
-                ctxt.fillText(line, x, y);
-                line = words[n] + " ";
-                y += currentTextElement.lineHeight;
-                currentTextElement.height += currentTextElement.lineHeight;
-                currentTextElement.width = ctxt.measureText(line).width > currentTextElement.width ? ctxt.measureText(line).width : currentTextElement.width; 
-            }
-            else {
-                line = testLine;
-            }
-        }
-        ctxt.fillText(line, x, y);
-        currentTextElement.width = ctxt.measureText(line).width > currentTextElement.width ? ctxt.measureText(line).width : currentTextElement.width; 
-        currentTextElement.height += currentTextElement.lineHeight;
-        currentTextElement.textHeight = currentTextElement.textHeight;
-        y += currentTextElement.lineHeight;
-    }       
-}
-
-document.addEventListener('mousemove', function(e){
-    mouseX = e.clientX - canvasPosition.left;
-    mouseY = e.clientY - canvasPosition.top;
-});
 
 
 function showAllTrans() {
@@ -715,163 +332,6 @@ textArea.oninput = function() {
     }
    
 }; 
-
-transArr['rotate'].ondragstart = function() {
-  return false;
-};
-transArr['rotate'].onmousedown = function(e) {
- /* transArr['circle'].x = currentTextElement.maxWidth / 2;
-    transArr['circle'].y = currentTextElement.height / 2;
-    transArr['circle'].radius = Math.sqrt(transArr['circle'].x * transArr['circle'].x + transArr['circle'].y * transArr['circle'].y);
-    transArr['circle'].style.height = transArr['circle'].style.width = 2 * transArr['circle'].radius + 'px';
-    transArr['circle'].style.top = - (2 * transArr['circle'].radius - currentTextElement.height) / 2 - 15 +'px';
-    transArr['circle'].style.left = - (2 * transArr['circle'].radius - currentTextElement.maxWidth) / 2 + 'px';
-    hideAllTrans();
-    transArr['circle'].style.display = 'block';*/
-    
-    transElements.style.display = 'block';
-    transArr['canvas-text'].style.display = 'block';
-    transArr['rotate'].style.display = 'block';
-    if (!rotateDownX) {
-        rotateDownX = e.clientX;
-        rotateDownY = e.clientY;   
-    }
-    document.addEventListener('mousemove', rotateCanvasEvent);
-}
-transArr['rotate'].onmouseup = function(e) {
-    showAllTrans();
-    transArr['circle'].style.display = 'none';
-    transElements.style.border = null;
-    document.removeEventListener('mousemove', rotateCanvasEvent);
-}
-function rotateCanvasEvent() {
-    center_x = (transElements.getBoundingClientRect().left + transElements.getBoundingClientRect().right) / 2;
-    center_y = (transElements.getBoundingClientRect().top + transElements.getBoundingClientRect().bottom) / 2;
-    mouse_x = mouseX + canvasFront.getBoundingClientRect().left;
-    mouse_y = mouseY + canvasFront.getBoundingClientRect().top;
-    
-    radiansRotate = Math.atan2(rotateDownX - center_x, rotateDownY - center_y);
-    var degreeRotate = (radiansRotate * (180 / Math.PI) * -1) - 90;
-    radians = Math.atan2(mouse_x - center_x, mouse_y - center_y);
-    degree = (radians * (180 / Math.PI) * -1) - 90 - degreeRotate; 
-    if (currentTextElement) {
-        currentTextElement.angle = degree;
-    }
-    if (currentImageElement) {
-        currentImageElement.angle = degree;
-    }
-    transElements.style.transform = 'rotate('+degree+'deg)'; 
-}
-
-transArr['remove'].onmouseup = function() {
-    hideAllTrans();
-    showComposition();
-    var layersList = document.getElementsByClassName('layers-list')[0];
-    var layers = layersList.getElementsByClassName('layer');
-    
-    if (currentImageElement) {
-        for (var i = 0; i < images.length; i++) {
-            if (images[i] == currentImageElement) {
-                images.splice(i, 1);
-            }
-        }
-
-        for (var i = 0; i < layers.length; i++) {
-            if (layers[i].element == currentImageElement) {
-                layers[i].parentNode.removeChild(layers[i]);        
-            }
-        }
-        currentImageElement = undefined;    
-    }
-    if (currentTextElement) {
-        for (var i = 0; i < texts.length; i++) {
-            if (texts[i] == currentTextElement) {
-                texts.splice(i, 1);
-            }
-        }
-        for (var i = 0; i < layers.length; i++) {
-            if (layers[i].element == currentTextElement) {
-                layers[i].parentNode.removeChild(layers[i]);        
-            }
-        }
-        currentTextElement = undefined;
-    }
-}
-
-transArr['duplicate'].onclick = function() {
-    if (currentImageElement) {
-        var image = currentImageElement.image;
-        images.push(new Img(image, currentImageElement.x + 50, currentImageElement.y + 50));
-        images[images.length - 1].angle = currentImageElement.angle;
-        images[images.length - 1].scale = currentImageElement.scale;
-        currentImageElement = images[images.length - 1];
-        currentTextElement = undefined;
-        hideAllModules();  
-        showAssistedCanvas();
-        showDetails();
-        createCurrentWidgetElement(image);
-        createDetailsElements('image', image, currentImageElement);    
-    }
-    else if (currentTextElement) {
-        texts.push(new Text(currentTextElement.value, currentTextElement.x + 50, currentTextElement.y + 50, currentTextElement.font, currentTextElement.fontSize));
-        texts[texts.length - 1].angle = currentTextElement.angle;
-        texts[texts.length - 1].scale = currentTextElement.scale;
-        texts[texts.length - 1].color = currentTextElement.color;
-        texts[texts.length - 1].fontStyle = currentTextElement.fontStyle;
-        texts[texts.length - 1].textAlign = currentTextElement.textAlign;
-        currentTextElement.drawOnMainCanvas();
-        currentTextElement = texts[texts.length - 1];
-        showAllTrans();
-        showAssistedCanvas();
-        definitionSizeAssistedCanvas();
-        drawTextOnAssistedCanvas();
-        showDetails();
-        createDetailsElements('text', currentTextElement, currentTextElement);
-    }
-};
-
-transArr['scale'].ondragstart = function() {
-  return false;
-};
-transArr['scale'].onmousedown = function(e) {    
-    scaleDownX = e.clientX;
-    scaleDownY = e.clientY; 
-    
-    center_x = (transElements.getBoundingClientRect().left + transElements.getBoundingClientRect().right) / 2;
-    center_y = (transElements.getBoundingClientRect().top + transElements.getBoundingClientRect().bottom) / 2;
-    firstLength = Math.sqrt((scaleDownX - center_x) * (scaleDownX - center_x) + (scaleDownY - center_y) * (scaleDownY - center_y) );
-    
-    document.addEventListener('mousemove', scaleCanvasEvent);
-}
-transArr['rotate'].onmouseup = function(e) {
-    showAllTrans();
-    transElements.style.border = null;
-    document.removeEventListener('mousemove', scaleCanvasEvent);
-}
-function scaleCanvasEvent() {
-    center_x = (transElements.getBoundingClientRect().left + transElements.getBoundingClientRect().right) / 2;
-    center_y = (transElements.getBoundingClientRect().top + transElements.getBoundingClientRect().bottom) / 2;
-    mouse_x = mouseX + canvasFront.getBoundingClientRect().left;
-    mouse_y = mouseY + canvasFront.getBoundingClientRect().top;
-    
-    var secondLength = Math.sqrt((mouse_x - center_x) * (mouse_x - center_x) + (mouse_y - center_y) * (mouse_y - center_y) );
-    var scale = secondLength / firstLength;
-    console.log("first " +  firstLength);
-    console.log("mouseX " +  mouse_x);
-    console.log("mouseY " +  mouse_y);
-    
-    
-    if (currentTextElement) {
-        console.log(scale);
-        currentTextElement.scale = scale;
-        showAssistedCanvas();
-    }
-    if (currentImageElement && scale < 5) {
-        currentImageElement.scale = scale;
-        showAssistedCanvas();
-    }
-}
-
 
 hideSelectedElements();
 function hideSelectedElements() {
@@ -990,14 +450,14 @@ for (var item in items) {
 
 function addHandlerItems(item) {
     return function () {
-        canvasBack.width = canvasBack.width;
+        canvas.width = canvas.width;
         image = new Image();
         image.src = item.getElementsByTagName('img')[0].src;
-        imgScale = (canvasFront.width / 2) / image.width < 
-            (canvasFront.height / 1.2) / image.height ? (canvasFront.width / 2) / image.width :  (canvasFront.height / 1.2) / image.height;
+        imgScale = (canvas.width / 2) / image.width < 
+            (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
         
-        ctxb.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
-        imageDataMainImage = ctxb.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
+        ctx.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
+        imageDataMainImage = ctx.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
         
         hideSelectedElements();
         var name = item.getElementsByClassName('item-name')[0].textContent;
@@ -1014,18 +474,18 @@ function addHandlerItems(item) {
 
 function addHandlerImageModule(item, module, className = 'item-name') {
     return function () {
-        clearCanvases();
+        canvas.width = canvas.width;
         var name = item.getElementsByClassName(className)[0].textContent;
         selectedElements[module].style.display = 'inline-block';
         selectedElements[module].innerHTML = name;
         image = new Image();
         image.src = item.getElementsByTagName('img')[0].src;
-        imgScale = (canvasFront.width / 2) / image.width < 
-            (canvasFront.height / 1.2) / image.height ? (canvasFront.width / 2) / image.width :  (canvasFront.height / 1.2) / image.height;
+        imgScale = (canvas.width / 2) / image.width < 
+            (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
         
-        ctxb.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
+        ctx.drawImage(image, mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
         dataOfOrder[module] = name;
-        imageDataMainImage = ctxb.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
+        imageDataMainImage = ctx.getImageData(mainImgX - image.width/(2/imgScale), 100, image.width * imgScale, image.height * imgScale);
         hideAllModules();
     }
 }
