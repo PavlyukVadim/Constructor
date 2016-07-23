@@ -12,29 +12,22 @@ var canvas, ctx,
 canvas = document.getElementById("canvas");
 canvas.height = 600;
 canvas.width = window.innerWidth * 0.8;
-
 canvases.style.width = window.innerWidth * 0.8 + 'px'; 
 
-
 var canvas = new fabric.Canvas('canvas');
-
 var mainImg, mainImgX = (canvas.width) / 2;
 
 var orderButton = document.getElementsByClassName('order')[0];
 orderButton.onclick = function() {
-    var frontImage = new Image();
-    frontImage.src = canvasFront.toDataURL();
-    frontImage.onload = function() {
-         ctxb.drawImage(frontImage, 0, 0);
-         backImageData = canvasBack.toDataURL("image/png");
-         var ajax = new XMLHttpRequest();
-         ajax.open("POST",'testSave.php',false);
-         ajax.onreadystatechange = function() {
-             console.log(ajax.responseText);
-         }
-         ajax.setRequestHeader('Content-Type', 'application/upload');
-         ajax.send("imgData="+backImageData);
-    };
+    canvas.deactivateAll().renderAll();
+    var imgURL = canvas.toDataURL('png');
+    var ajax = new XMLHttpRequest();
+    ajax.open("POST",'testSave.php',false);
+    ajax.onreadystatechange = function() {
+     console.log(ajax.responseText);
+    }
+    ajax.setRequestHeader('Content-Type', 'application/upload');
+    ajax.send("imgData="+imgURL);
 };
 
 /*---------Server----------*/
