@@ -12,7 +12,9 @@ var canvas, ctx,
 canvas = document.getElementById("canvas");
 canvas.height = 600;
 canvas.width = window.innerWidth * 0.8;
+
 canvases.style.width = window.innerWidth * 0.8 + 'px'; 
+
 
 var canvas = new fabric.Canvas('canvas');
 
