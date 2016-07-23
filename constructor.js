@@ -172,11 +172,6 @@ function showComposition() {
     widgets['images'].style.display = 'none';
 }
 
-
-var texts = [];
-var images = [];
-
-
 var chooseFile = document.getElementById('choose-file');
 chooseFile.onchange = function() {
     var file = chooseFile.files[0];
@@ -227,6 +222,12 @@ document.onclick = function() {
             widgets['text'].style.display = 'block';
             widgets['images'].style.display = 'none';
         }
+        else {
+            currentImageElement = canvas.getActiveObject();
+            widgets['layers'].style.display = 'none';
+            widgets['text'].style.display = 'none';
+            widgets['images'].style.display = 'block';
+        }
     }
     else {
         widgets['layers'].style.display = 'block';
@@ -261,6 +262,53 @@ textAlign['center'] = widgets['text'].getElementsByClassName('align-center')[0];
 textAlign['right'] = widgets['text'].getElementsByClassName('align-right')[0];
 var fontElement = widgets['text'].getElementsByClassName('font')[0];
 creatingFonts = false;
+
+var imageCopy = document.getElementById('image-copy'),
+    imageDelete = document.getElementById('image-delete'),
+    textCopy = document.getElementById('text-copy'),
+    textDelete = document.getElementById('text-delete');
+
+imageCopy.onclick = function() {
+    currentImageElement = fabric.util.object.clone(currentImageElement);
+    createDetailsElements("image", currentImageElement, currentImageElement.image);
+    currentImageElement.set('top', currentImageElement.top + 25);
+    currentImageElement.set('left', currentImageElement.left + 25);
+    canvas.add(currentImageElement);
+    canvas.setActiveObject(currentImageElement);
+}
+imageDelete.onclick = function() {
+    var layersList = document.getElementsByClassName('layers-list')[0], layers = layersList.getElementsByClassName('layer');
+    for (var i = 0; i < layers.length; i++) {
+        if (layers[i].element == currentImageElement) {
+            layers[i].parentNode.removeChild(layers[i]);
+            break;
+        }
+    }
+    canvas.remove(currentImageElement);
+    widgets['layers'].style.display = 'block';
+    widgets['images'].style.display = 'none';
+}
+
+textCopy.onclick = function() {
+    currentTextElement = fabric.util.object.clone(currentTextElement);
+    createDetailsElements("text", currentTextElement);
+    currentTextElement.set('top', currentTextElement.top + 25);
+    currentTextElement.set('left', currentTextElement.left + 25);
+    canvas.add(currentTextElement);
+    canvas.setActiveObject(currentTextElement); 
+}
+textDelete.onclick = function() {
+    var layersList = document.getElementsByClassName('layers-list')[0], layers = layersList.getElementsByClassName('layer');
+    for (var i = 0; i < layers.length; i++) {
+        if (layers[i].element == currentTextElement) {
+            layers[i].parentNode.removeChild(layers[i]);
+            break;
+        }
+    }
+    canvas.remove(currentTextElement);
+    widgets['layers'].style.display = 'block';
+    widgets['text'].style.display = 'none';
+}
 
 fontElement.onclick = function() {
     if (!creatingFonts) {
@@ -369,7 +417,7 @@ imagesType['case'][1] = "images/types/3d.png";
 titlesType['case'] = [];
 titlesType['case'][0] = "2d";
 titlesType['case'][1] = "3d";
-
+    
 
 titlesMaterial['poster'] = [];
 titlesMaterial['pillow'] = [];
@@ -674,6 +722,7 @@ function createDetailsElements(type, element, image) {
         layer.appendChild(content);
         layersList.appendChild(layer);
         layer.element = element;
+        element.image = image;
         layer.onclick = addImageLayerHandler(element);
     }
 }

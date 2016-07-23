@@ -590,6 +590,11 @@ nav .btn {
     margin-left: 10px
 }
 
+.operate .btn{
+    margin: 10px 0;
+    width: 65px;
+}
+
 /*------------trans------------*/
 .trans{
     display: none;
@@ -700,6 +705,9 @@ nav .btn {
         width: 176px;
         font-size: 15px;
     }
+    .operate .btn{
+        width: 95px;
+    }
 }
 
 @media screen and (max-width:800px) {
@@ -724,5 +732,8 @@ nav .btn {
         right: 8px;
         width: 133px;
         font-size: 15px;
+    }
+    .operate .btn{
+        width: 65px;
     }
 }
