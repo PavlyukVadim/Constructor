@@ -211,7 +211,7 @@ function showDetails(type, element) {
         textArea.value = element.text;
         
     }
-    else if (type == 'images') {
+    else if (currentImageElement) {
         widgets['images'].style.display = 'block';
         widgets['text'].style.display = 'none';
     }       
@@ -482,16 +482,20 @@ function addHandlerImageModule(item, module, className = 'item-name') {
     }
 }
 
-function addHandlerAddImages(item, image) {
+function addHandlerAddImages(item, image, width) {
     return function() {
-        images.push(new Img(image, 300, 200));
-        currentImageElement = images[images.length - 1];
-        currentTextElement = undefined;
-        hideAllModules();  
-        showAssistedCanvas();
-        showDetails();
-        createCurrentWidgetElement(image);
-        createDetailsElements('image', image, currentImageElement);
+        fabric.Image.fromURL(image.src, function(img) {
+            img.scale(mainImg.width / width);
+            img.set("left", mainImgX - (mainImg.width / 2));
+            img.set("top", 125);
+            canvas.add(img);
+            currentImageElement = img;
+            currentTextElement = undefined;
+            hideAllModules();  
+            showDetails();
+            createCurrentWidgetElement(image);
+            createDetailsElements('image', currentImageElement, image);
+        });
     }
 }
 
@@ -631,11 +635,11 @@ function createImageModule(image) {
     divCenter.classList.add('img-center');
     divCenter.appendChild(image); 
     div.appendChild(divCenter);
-    div.onclick = addHandlerAddImages(div, image);
+    div.onclick = addHandlerAddImages(div, image, image.width);
     modulesArr.imagesElement.appendChild(div);
 }
 
-function createDetailsElements(type, element) {
+function createDetailsElements(type, element, image) {
     var info, h4, img, layersList, layer, content, imgDiv;
     layersList = document.getElementsByClassName('layers-list')[0];
     layer = document.createElement('div');
@@ -661,7 +665,7 @@ function createDetailsElements(type, element) {
     }
     else if (type == 'image') {
         img = document.createElement('img');
-        img.src = element.src;
+        img.src = image.src;
         h4 = document.createElement('h4');
         h4.innerHTML = 'Моя картинка';
         imgDiv.appendChild(img);
@@ -669,16 +673,14 @@ function createDetailsElements(type, element) {
         content.appendChild(h4);
         layer.appendChild(content);
         layersList.appendChild(layer);
-        layer.element = currentImageElement;
-        layer.onclick = addImageLayerHandler(currentImageElement);
+        layer.element = element;
+        layer.onclick = addImageLayerHandler(element);
     }
 }
 
 function createCurrentWidgetElement(image) {
     var img = document.getElementById('current-image');
     img.src = image.src;
-    
-    
     buttonShowDetails = widgets['images'].getElementsByClassName('crumbs')[0];
     buttonShowDetails.onclick = function() {
         showComposition();
@@ -687,13 +689,9 @@ function createCurrentWidgetElement(image) {
 
 function addImageLayerHandler(element){
     return function() {
-        showDetails(); 
         currentImageElement = element;
-        canvasFront.width = canvasFront.width;
-        drawAllImgElements();
-        drawAllTextElements();
-        showAssistedCanvas();
-        showDetails();
+        showDetails(); 
+        canvas.setActiveObject(currentImageElement);
     }
 }
 
