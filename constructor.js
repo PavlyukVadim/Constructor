@@ -11,10 +11,12 @@ var canvas, ctx,
 
 canvas = document.getElementById("canvas");
 canvas.height = 600;
-canvas.width = window.innerWidth * 0.8;
+canvas.width = window.innerWidth * 0.8;0
 canvases.style.width = window.innerWidth * 0.8 + 'px'; 
 
 var canvas = new fabric.Canvas('canvas');
+
+
 var mainImg, mainImgX = (canvas.width) / 2;
 
 var orderButton = document.getElementsByClassName('order')[0];
@@ -121,6 +123,7 @@ function changeColorMainImage() {
         img.set("selectable", false);
         img.set("left", mainImgX - image.width/(2/imgScale));
         img.set("top", 100);
+        //img.globalCompositeOperation = 'source-atop';
         canvas.add(img);
         mainImg = img;
     });    
@@ -185,6 +188,7 @@ var AddImageElement = document.getElementsByClassName('image')[0];
 
 AddTextElement.onclick = function() {
     var text = new fabric.Text('Мой текст', { left: mainImgX - 90, top: 150 });
+    text.globalCompositeOperation = 'source-atop';
     canvas.add(text);
     createDetailsElements('text', text);
     showDetails('text', text);
@@ -268,6 +272,7 @@ imageCopy.onclick = function() {
     createDetailsElements("image", currentImageElement, currentImageElement.image);
     currentImageElement.set('top', currentImageElement.top + 25);
     currentImageElement.set('left', currentImageElement.left + 25);
+    
     canvas.add(currentImageElement);
     canvas.setActiveObject(currentImageElement);
 }
@@ -282,6 +287,11 @@ imageDelete.onclick = function() {
     canvas.remove(currentImageElement);
     widgets['layers'].style.display = 'block';
     widgets['images'].style.display = 'none';
+    
+    var layers = document.getElementsByClassName('layer');
+    if (!layers.length) {
+         widgetElement.style.display = 'none';
+    }
 }
 
 textCopy.onclick = function() {
@@ -303,6 +313,46 @@ textDelete.onclick = function() {
     canvas.remove(currentTextElement);
     widgets['layers'].style.display = 'block';
     widgets['text'].style.display = 'none';
+    
+    var layers = document.getElementsByClassName('layer');
+    if (!layers.length) {
+         widgetElement.style.display = 'none';
+    }
+}
+
+document.onkeyup = function(e) {
+    
+    if (e.keyCode == 46) {
+        if (currentImageElement) {
+            var layersList = document.getElementsByClassName('layers-list')[0], layers = layersList.getElementsByClassName('layer');
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].element == currentImageElement) {
+                    layers[i].parentNode.removeChild(layers[i]);
+                    break;
+                }
+            }
+            canvas.remove(currentImageElement);
+            widgets['layers'].style.display = 'block';
+            widgets['images'].style.display = 'none';
+        }
+        if (currentTextElement) {
+            var layersList = document.getElementsByClassName('layers-list')[0], layers = layersList.getElementsByClassName('layer');
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].element == currentTextElement) {
+                    layers[i].parentNode.removeChild(layers[i]);
+                    break;
+                }
+            }
+            canvas.remove(currentTextElement);
+            widgets['layers'].style.display = 'block';
+            widgets['text'].style.display = 'none';
+        }
+    }
+    
+    var layers = document.getElementsByClassName('layer');
+    if (!layers.length) {
+         widgetElement.style.display = 'none';
+    }
 }
 
 fontElement.onclick = function() {
@@ -477,17 +527,24 @@ function addHandlerItems(item) {
         image = new Image();
         image.src = item.getElementsByTagName('img')[0].src;
         imgScale = (canvas.width / 2) / image.width < (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
-        if (mainImg) {
-            canvas.remove(mainImg);    
-        }
+        canvas.clear();
+
         console.log(imgScale);
         fabric.Image.fromURL(image.src, function(img) {
             img.scale(imgScale);
             img.set("selectable", false);
             img.set("left", mainImgX - (image.width / 2) * (imgScale));
             img.set("top", 100);
+            //img.globalCompositeOperation = 'source-atop';
             canvas.add(img);
+            canvas.renderAll();
             mainImg = img;
+            var layers = document.getElementsByClassName('layer');
+            console.log(layers);
+            for (var i = 0; i < layers.length; i++) {
+                canvas.add(layers[i].element);
+            }
+            
         });
         hideSelectedElements();
         var name = item.getElementsByClassName('item-name')[0].textContent;
@@ -498,7 +555,7 @@ function addHandlerItems(item) {
         hideAllControls();
         var dataOfItemControls = item.dataset.controls;
         dataOfItemControls = dataOfItemControls.split(',');
-        displayControls(dataOfItemControls, item);
+        displayControls(dataOfItemControls, item);   
     }
 }
 // select type of products
@@ -512,14 +569,21 @@ function addHandlerImageModule(item, module, className = 'item-name') {
         image.src = item.getElementsByTagName('img')[0].src;
         imgScale = (canvas.width / 2) / image.width < 
             (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
-        canvas.remove(mainImg);
+        canvas.clear();
         fabric.Image.fromURL(image.src, function(img) {
             img.scale(imgScale);
             img.set("selectable", false);
             img.set("left", mainImgX - image.width/(2/imgScale));
             img.set("top", 100);
+            //img.globalCompositeOperation = 'source-atop';
             canvas.add(img);
             mainImg = img;
+            
+            var layers = document.getElementsByClassName('layer');
+            console.log(layers);
+            for (var i = 0; i < layers.length; i++) {
+                canvas.add(layers[i].element);
+            }
         });
         hideAllModules();
     }
@@ -531,6 +595,7 @@ function addHandlerAddImages(item, image, width) {
             img.scale(mainImg.width / width);
             img.set("left", mainImgX - (mainImg.width / 2));
             img.set("top", 125);
+            img.globalCompositeOperation = 'source-atop';
             canvas.add(img);
             currentImageElement = img;
             currentTextElement = undefined;
@@ -538,7 +603,7 @@ function addHandlerAddImages(item, image, width) {
             showDetails();
             createCurrentWidgetElement(image);
             createDetailsElements('image', currentImageElement, image);
-        });
+        });        
     }
 }
 
