@@ -7,7 +7,86 @@ var canvas, ctx,
     typeElement,
     widgets = [],
     currentTextElement,
-    currentImageElement;
+    currentImageElement,
+    imagesType = [], titlesType = [],
+    imagesMaterial = [], titlesMaterial = [],
+    imagesModel = [], titlesModel = [],
+    titlesCountFragments = [],
+    titlesSize = [];
+
+
+imagesType['t-shirt'] = [];
+imagesType['t-shirt'][0] = "images/T_shirt/001.png";
+imagesType['t-shirt'][1] = "images/T_shirt/002.png";
+imagesType['t-shirt'][2] = "images/T_shirt/003.png";
+
+titlesType['t-shirt'] = [];
+titlesType['t-shirt'][0] = "Женская";
+titlesType['t-shirt'][1] = "Мужская";
+titlesType['t-shirt'][2] = "Унисекс";
+
+imagesType['shirt'] = [];
+imagesType['shirt'][0] = "images/shirts/001.png";
+imagesType['shirt'][1] = "images/shirts/002.png";
+
+titlesType['shirt'] = [];
+titlesType['shirt'][0] = "Мужская";
+titlesType['shirt'][1] = "Женская";
+
+titlesMaterial['poster'] = [];
+titlesMaterial['pillow'] = [];
+
+titlesMaterial['poster'][0] = "Глянец";
+titlesMaterial['poster'][1] = "Матовая";
+
+titlesMaterial['pillow'][0] = "Плюш";
+titlesMaterial['pillow'][1] = "Cатин";
+
+imagesModel['cup'] = [], titlesModel['cup'] = [];
+imagesModel['case'] = [], titlesModel['case'] = [];
+imagesModel['cup'][0] = "images/models/1460464035-thumb.jpg";
+imagesModel['cup'][1] = "images/models/1460464512-thumb.jpg";
+
+titlesModel['cup'][0] = "Разноцветные";
+titlesModel['cup'][1] = "Одноцветные";
+
+imagesModel['case'][0] = "images/cases/galaxy-s4.png";
+imagesModel['case'][1] = "images/cases/galaxy-s5.png";
+imagesModel['case'][2] = "images/cases/iphone-4.png";
+imagesModel['case'][3] = "images/cases/iphone-5.png";
+imagesModel['case'][4] = "images/cases/iphone-6.png";
+imagesModel['case'][5] = "images/cases/iphone-6+.png";
+
+
+titlesModel['case'][0] = "galaxy-s4";
+titlesModel['case'][1] = "galaxy-s5";
+titlesModel['case'][2] = "iphone-4";
+titlesModel['case'][3] = "iphone-5";
+titlesModel['case'][4] = "iphone-6";
+titlesModel['case'][5] = "iphone-6+";
+
+titlesCountFragments['puzzle'] = [];
+titlesCountFragments['puzzle'][0] = '120 шт';
+titlesCountFragments['puzzle'][1] = '240 шт';
+
+titlesSize['poster'] = [];
+titlesSize['poster'][0] = 'А1';
+titlesSize['poster'][1] = 'A2';
+
+titlesSize['puzzle'] = [];
+titlesSize['puzzle'][0] = 'А3';
+titlesSize['puzzle'][1] = 'A4';
+
+titlesSize['magnet'] = [];
+titlesSize['magnet'][0] = 'А7';
+titlesSize['magnet'][1] = 'A6';
+titlesSize['magnet'][2] = 'A5';
+
+titlesCausing = [];
+titlesCausing['case'] = [];
+titlesCausing['case'][0] = "2d";
+titlesCausing['case'][1] = "3d";
+
 
 canvas = document.getElementById("canvas");
 canvas.height = 600;
@@ -16,8 +95,7 @@ canvases.style.width = window.innerWidth * 0.8 + 'px';
 
 var canvas = new fabric.Canvas('canvas');
 
-
-var mainImg, mainImgX = (canvas.width) / 2;
+var mainImg, mainImgX = (canvas.width) / 2; 
 
 var orderButton = document.getElementsByClassName('order')[0];
 orderButton.onclick = function() {
@@ -26,12 +104,11 @@ orderButton.onclick = function() {
     var ajax = new XMLHttpRequest();
     ajax.open("POST",'testSave.php',false);
     ajax.onreadystatechange = function() {
-     console.log(ajax.responseText);
+        console.log(ajax.responseText);
     }
     ajax.setRequestHeader('Content-Type', 'application/upload');
     ajax.send("imgData="+imgURL);
 };
-
 /*---------Server----------*/
 /*
     <?php
@@ -49,7 +126,7 @@ orderButton.onclick = function() {
 var dataOfOrder = [];
 
 var modulesArr = [];
-modulesArr.itemsElement = document.getElementById("items");
+modulesArr.basesElement = document.getElementById("items");
 modulesArr.typesElement = document.getElementById('type');
 modulesArr.materialsElement = document.getElementById('material');
 modulesArr.modelsElement = document.getElementById('model');
@@ -57,21 +134,14 @@ modulesArr.countFragmentsElement = document.getElementById('count-frarments');
 modulesArr.sizesElement = document.getElementById('size');
 modulesArr.imagesElement = document.getElementById('images');
 modulesArr.colorsElement = document.getElementById('colors');
+modulesArr.causingElement = document.getElementById('causing');
 
 //Set right retreat all modules
-for (var name in modulesArr) {
-    modulesArr[name].style.right =  window.innerWidth * 0.1 + 125 + 'px'; 
-}
+$('.module, .text-module').css('right', window.innerWidth * 0.1 + 125 + 'px');
+
 //Close all modules
+$('.closer').bind('click', hideAllModules);
 closer = document.getElementsByClassName("closer");
-for (var name in closer) {
-   closer[name].onclick = addHandlersCloser(); 
-}
-function addHandlersCloser() {
-    return function() {
-        hideAllModules();
-    } 
-}
 
 var colorElement = document.getElementById('valueInput');
 colorElement.onchange = function() {
@@ -129,20 +199,9 @@ function changeColorMainImage() {
     });    
 }
 
-
-items = document.getElementsByClassName('item');
 controlsElement = document.getElementById('controls');
 controls = controlsElement.children;
 
-var controlsArr = [];
-controlsArr.items = controlsElement.getElementsByClassName('base')[0];
-controlsArr.types = controlsElement.getElementsByClassName('type')[0];
-controlsArr.materials = controlsElement.getElementsByClassName('material')[0];
-controlsArr.models = controlsElement.getElementsByClassName('model')[0];
-controlsArr.countFragments = controlsElement.getElementsByClassName('count-fragments')[0];
-controlsArr.sizes = controlsElement.getElementsByClassName('size')[0];
-controlsArr.images = controlsElement.getElementsByClassName('image')[0];
-controlsArr.colors = controlsElement.getElementsByClassName('color')[0];
 
 var selectedBlockElement = document.getElementsByClassName('in')[0];
 var selectedElements = []; 
@@ -153,6 +212,7 @@ var selectedElements = [];
     selectedElements['size'] = selectedBlockElement.getElementsByClassName('size')[0];
     selectedElements['material'] = selectedBlockElement.getElementsByClassName('material')[0];
     selectedElements['count-fragments'] = selectedBlockElement.getElementsByClassName('count-fragments')[0];
+ selectedElements['causing'] = selectedBlockElement.getElementsByClassName('causing')[0];
 
 
 var widgetElement = document.getElementsByClassName('widgets')[0],
@@ -406,22 +466,27 @@ underLineElement.onclick = function() {
     canvas.setActiveObject(currentTextElement);
 };
 
+hideAllControls();  
+hideAllModules(); 
 hideSelectedElements();
+
 function hideSelectedElements() {
     for (var name in selectedElements) {
-        selectedElements[name].style.display = 'none';
+       selectedElements[name].style.display = 'none';
     }
 }
 
-for (var name in controlsArr) {
-    controlsArr[name].onclick = addHandlerControls(controlsArr[name], name);
-}
-function addHandlerControls(element, name) {
-    return function () {
-        hideAllModules();
-        modulesArr[name + 'Element'].style.display = 'block';
+//click on right tab 
+$('#controls .btn').bind('click', function() {
+    hideAllModules();
+    var selector = "#" + this.classList[2];
+    console.log(selector);
+    selector = selector == "#base" ? "#items" : selector;
+    if (selector ==  "#color" || selector == "#image") {
+        selector += 's';    
     }
-}
+    $(selector).css("display", "block");
+});
 
 function removeAllModules(id, className) {
     var block = document.getElementById(id) || document.getElementById('size');
@@ -431,136 +496,45 @@ function removeAllModules(id, className) {
     }
 }
     
-var imagesType = [], titlesType = [],
-    imagesMaterial = [], titlesMaterial = [],
-    imagesModel = [], titlesModel = [],
-    titlesCountFragments = [],
-    titlesSize = [];
-    titlesSize = [];
-imagesType['t-shirt'] = [];
-imagesType['t-shirt'][0] = "images/T_shirt/001.png";
-imagesType['t-shirt'][1] = "images/T_shirt/002.png";
-imagesType['t-shirt'][2] = "images/T_shirt/003.png";
-
-titlesType['t-shirt'] = [];
-titlesType['t-shirt'][0] = "Женская";
-titlesType['t-shirt'][1] = "Мужская";
-titlesType['t-shirt'][2] = "Унисекс";
-
-imagesType['shirt'] = [];
-imagesType['shirt'][0] = "images/shirts/001.png";
-imagesType['shirt'][1] = "images/shirts/002.png";
-
-titlesType['shirt'] = [];
-titlesType['shirt'][0] = "Мужская";
-titlesType['shirt'][1] = "Женская";
-
-imagesType['case'] = [];
-imagesType['case'][0] = "images/types/2d.png";
-imagesType['case'][1] = "images/types/3d.png";
-
-titlesType['case'] = [];
-titlesType['case'][0] = "2d";
-titlesType['case'][1] = "3d";
+//choose product
+$('.item').bind('click', function(e) {
+    var item = this;
+    image = new Image();
+    image.src = item.getElementsByTagName('img')[0].src;
+    imgScale = (canvas.width / 2) / image.width < (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
+    canvas.clear();
     
+    fabric.Image.fromURL(image.src, function(img) {
+        img.scale(imgScale);
+        img.set("selectable", false);
+        img.set("left", mainImgX - (image.width / 2) * (imgScale));
+        img.set("top", 100);
 
-titlesMaterial['poster'] = [];
-titlesMaterial['pillow'] = [];
+        canvas.add(img);
+        canvas.renderAll();
+        mainImg = img;
+        var layers = document.getElementsByClassName('layer');
+        for (var i = 0; i < layers.length; i++) {
+            canvas.add(layers[i].element);
+        }
+    });
+    
+    hideSelectedElements();
+    var name = item.getElementsByClassName('item-name')[0].textContent;
+    selectedElements['base'].style.display = 'inline-block';
+    selectedElements['base'].innerHTML = name;
+    dataOfOrder['base'] = name;
+    hideAllModules();
+    hideAllControls();
+    var dataOfItemControls = item.dataset.controls;
+    dataOfItemControls = dataOfItemControls.split(',');
+    displayControls(dataOfItemControls, item);       
+});
 
-titlesMaterial['poster'][0] = "Глянец";
-titlesMaterial['poster'][1] = "Матовая";
-
-titlesMaterial['pillow'][0] = "Плюш";
-titlesMaterial['pillow'][1] = "Cатин";
-
-imagesModel['cup'] = [], titlesModel['cup'] = [];
-imagesModel['case'] = [], titlesModel['case'] = [];
-imagesModel['cup'][0] = "images/models/1460464035-thumb.jpg";
-imagesModel['cup'][1] = "images/models/1460464512-thumb.jpg";
-
-titlesModel['cup'][0] = "Разноцветные";
-titlesModel['cup'][1] = "Одноцветные";
-
-imagesModel['case'][0] = "images/cases/galaxy-s4.png";
-imagesModel['case'][1] = "images/cases/galaxy-s5.png";
-imagesModel['case'][2] = "images/cases/iphone-4.png";
-imagesModel['case'][3] = "images/cases/iphone-5.png";
-imagesModel['case'][4] = "images/cases/iphone-6.png";
-imagesModel['case'][5] = "images/cases/iphone-6+.png";
-
-
-titlesModel['case'][0] = "galaxy-s4";
-titlesModel['case'][1] = "galaxy-s5";
-titlesModel['case'][2] = "iphone-4";
-titlesModel['case'][3] = "iphone-5";
-titlesModel['case'][4] = "iphone-6";
-titlesModel['case'][5] = "iphone-6+";
-
-titlesCountFragments['puzzle'] = [];
-titlesCountFragments['puzzle'][0] = '120 шт';
-titlesCountFragments['puzzle'][1] = '240 шт';
-
-titlesSize['poster'] = [];
-titlesSize['poster'][0] = 'А1';
-titlesSize['poster'][1] = 'A2';
-
-titlesSize['puzzle'] = [];
-titlesSize['puzzle'][0] = 'А3';
-titlesSize['puzzle'][1] = 'A4';
-
-titlesSize['magnet'] = [];
-titlesSize['magnet'][0] = 'А7';
-titlesSize['magnet'][1] = 'A6';
-titlesSize['magnet'][2] = 'A5';
-
-
-hideAllControls();  
-hideAllModules();  
-
-for (var item in items) {
-    items[item].onclick = addHandlerItems(items[item]);   
-}
-
-// click on products
-function addHandlerItems(item) {
-    return function () {
-        image = new Image();
-        image.src = item.getElementsByTagName('img')[0].src;
-        imgScale = (canvas.width / 2) / image.width < (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
-        canvas.clear();
-
-        console.log(imgScale);
-        fabric.Image.fromURL(image.src, function(img) {
-            img.scale(imgScale);
-            img.set("selectable", false);
-            img.set("left", mainImgX - (image.width / 2) * (imgScale));
-            img.set("top", 100);
-            //img.globalCompositeOperation = 'source-atop';
-            canvas.add(img);
-            canvas.renderAll();
-            mainImg = img;
-            var layers = document.getElementsByClassName('layer');
-            console.log(layers);
-            for (var i = 0; i < layers.length; i++) {
-                canvas.add(layers[i].element);
-            }
-            
-        });
-        hideSelectedElements();
-        var name = item.getElementsByClassName('item-name')[0].textContent;
-        selectedElements['base'].style.display = 'inline-block';
-        selectedElements['base'].innerHTML = name;
-        dataOfOrder['base'] = name;
-        hideAllModules();
-        hideAllControls();
-        var dataOfItemControls = item.dataset.controls;
-        dataOfItemControls = dataOfItemControls.split(',');
-        displayControls(dataOfItemControls, item);   
-    }
-}
 // select type of products
-function addHandlerImageModule(item, module, className = 'item-name') {
+function addHandlerImageModule(item, module, className) {
     return function () {
+        className = className || 'item-name';
         canvas.width = canvas.width;
         var name = item.getElementsByClassName(className)[0].textContent;
         selectedElements[module].style.display = 'inline-block';
@@ -575,7 +549,6 @@ function addHandlerImageModule(item, module, className = 'item-name') {
             img.set("selectable", false);
             img.set("left", mainImgX - image.width/(2/imgScale));
             img.set("top", 100);
-            //img.globalCompositeOperation = 'source-atop';
             canvas.add(img);
             mainImg = img;
             
@@ -627,23 +600,27 @@ function displayControls(arrControls, element) {
     }
     if(arrControls.indexOf('type') != -1) {
         removeAllModules('type', 'type-item');
-        createTypeModule(element.id);
+        createModule(element.id, imagesType[element.id], titlesType[element.id], 'type', modulesArr.typesElement);
     }
     if(arrControls.indexOf('material') != -1) {
         removeAllModules('material', 'text-type-item');
-        createMaterialModule(element.id);
+        createModule(element.id, false, titlesMaterial[element.id], 'material', modulesArr.materialsElement);
     }
     if(arrControls.indexOf('model') != -1) {
-        removeAllModules('model', 'type-item')
-        createModelModule(element.id);
+        removeAllModules('model', 'type-item');
+        createModule(element.id, imagesModel[element.id], titlesModel[element.id], 'model', modulesArr.modelsElement);
     }
-    if(arrControls.indexOf('count-fragments') != -1) {
+    if(arrControls.indexOf('countFragments') != -1) {
         removeAllModules('count-fragments', 'text-type-item');
-        createCountFragmentsModule(element.id);
+        createModule(element.id, false, titlesCountFragments[element.id], 'count-fragments', modulesArr.countFragmentsElement);
     }  
     if(arrControls.indexOf('size') != -1) {
-        //removeAllModules("size", 'text-type-item');
-        createSizeModule(element.id);
+        removeAllModules("size", 'text-type-item');
+        createModule(element.id, false, titlesSize[element.id], 'size', modulesArr.sizesElement);
+    }
+    if(arrControls.indexOf('causing') != -1) {
+        removeAllModules("causing", 'text-type-item');
+        createModule(element.id, false, titlesCausing[element.id], 'causing', modulesArr.causingElement);
     }
 }
 
@@ -654,85 +631,33 @@ function hideAllControls() {
 }
 
 function hideAllModules() {
-    for (var name in modulesArr) {
-        modulesArr[name].style.display = 'none';
-    }
+    $('.module, .text-module').css('display', 'none');
 }
 
-function createTypeModule(id) {
-    for (var i = 0; i < imagesType[id].length; i++) {
-        var div = document.createElement('div');
-        div.classList.add('type-item');
-        var img = new Image();
-        img.src = imagesType[id][i];
-        div.appendChild(img);           
-        
+//tab: type, size, model, ...
+function createModule(id, arrayImage, arrayTitles, name, parentElement){
+    for (var i = 0; i < arrayTitles.length; i++) {
+        var div = document.createElement('div');    
         var p = document.createElement('p');
-        p.innerHTML = titlesType[id][i];
-        p.classList.add('item-name');
-        div.appendChild(p);
-        div.onclick = addHandlerImageModule(div, 'type');
-        modulesArr.typesElement.appendChild(div);
-    }
-    
-}
+        p.innerHTML = arrayTitles[i];
+        
+        if (arrayImage){
+            div.classList.add('type-item');
+            var img = new Image();
+            img.src = arrayImage[i];
+            div.appendChild(img);           
 
-function createMaterialModule(id) {
-    for (var i = 0; i < titlesMaterial[id].length; i++) {
-        var div = document.createElement('div');
-        div.classList.add('text-type-item');
-        
-        var p = document.createElement('p');
-        p.innerHTML = titlesMaterial[id][i];
-        p.classList.add('text-item-name');
-        div.appendChild(p);
-        div.onclick = addHandlerTextModule(div, 'material'); 
-        modulesArr.materialsElement.appendChild(div);
-    }
-}
-
-function createModelModule(id) {
-    for (var i = 0; i < imagesModel[id].length; i++) {
-        var div = document.createElement('div');
-        div.classList.add('type-item');
-        var img = new Image();
-        img.src = imagesModel[id][i];
-        div.appendChild(img);           
-        
-        var p = document.createElement('p');
-        p.innerHTML = titlesModel[id][i];
-        p.classList.add('item-name');
-        div.appendChild(p);
-        div.onclick = addHandlerImageModule(div, 'material');
-        modulesArr.modelsElement.appendChild(div);
-    }
-}
-
-function createCountFragmentsModule(id) {
-    for (var i = 0; i < titlesCountFragments[id].length; i++) {
-        var div = document.createElement('div');
-        div.classList.add('text-type-item');
-        
-        var p = document.createElement('p');
-        p.innerHTML = titlesCountFragments[id][i];
-        p.classList.add('text-item-name');
-        div.appendChild(p);
-        div.onclick = addHandlerTextModule(div, 'count-fragments'); 
-        modulesArr.countFragmentsElement.appendChild(div);
-    }
-}
-
-function createSizeModule(id) {
-    for (var i = 0; i < titlesSize[id].length; i++) {
-        var div = document.createElement('div');
-        div.classList.add('text-type-item');
-        
-        var p = document.createElement('p');
-        p.innerHTML = titlesSize[id][i];
-        p.classList.add('text-item-name');
-        div.appendChild(p);
-        div.onclick = addHandlerImageModule(div, 'size', 'text-item-name'); 
-        modulesArr.sizesElement.appendChild(div);
+            p.classList.add('item-name');
+            div.appendChild(p);
+            div.onclick = addHandlerImageModule(div, name);
+        }
+        else {
+            div.classList.add('text-type-item');
+            p.classList.add('text-item-name');
+            div.appendChild(p);
+            div.onclick = addHandlerTextModule(div, name);
+        }    
+        parentElement.appendChild(div);
     }
 }
 

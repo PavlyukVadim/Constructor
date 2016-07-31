@@ -6,10 +6,12 @@
 	<link rel="stylesheet" href="style/style.css">
 	<link rel="stylesheet" href="style/fonts.css">
     
+    <script src="libs/jquery-3.0.0.min.js"></script>
     <script src="libs/fabric.min.js" defer></script>
     <script src="constructor.js" defer></script>
     <script src="libs/jscolor.js" defer></script>
     <script src="libs/color-thief.js" defer></script>
+    
 </head>
 <body>
     <div id="edit-area">
@@ -24,6 +26,7 @@
                     <li class="btn icon size">Размер</li>  
                     <li class="btn icon material">Материал</li>        
                     <li class="btn icon count-fragments">Количество фрагментов</li>                
+                    <li class="btn icon causing">Тип нанесения</li>                
                     <li class="capt capt-add mt20">Добавьте</li>
                     <li class="btn icon image">Картинку</li>
                     <li class="btn icon text">Текст</li>
@@ -41,6 +44,7 @@
                     <div class="size"></div>
                     <div class="material"></div>
                     <div class="count-fragments"></div>
+                    <div class="causing"></div>
                 </div>
             </div>
             
@@ -75,7 +79,7 @@
                     <img src="images/cup.png">
                     <p class="item-name">Кружка</p>
                 </div>
-                <div class="item" id="case" data-controls="type,color,model">
+                <div class="item" id="case" data-controls="causing,color,model">
                     <img src="images/case.png">
                     <p class="item-name">Кейс</p>
                 </div>    
@@ -114,8 +118,13 @@
                 <div class="closer"></div>
             </div>
             
-            <div id="count-frarments" class="text-module" style="display:none">
+            <div id="count-fragments" class="text-module" style="display:none">
                 <p id="type-title">Выберите количество фрагментов:</p>
+                <div class="closer"></div>
+            </div>
+            
+            <div id="causing" class="text-module" style="display:none">
+                <p id="type-title">Выберите тип нанесения:</p>
                 <div class="closer"></div>
             </div>
             
