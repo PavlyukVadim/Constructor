@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="ru-RU">
+<html lang="ru">
 <head>
 	<title>Конструктор</title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="style/style.css">
-	<link rel="stylesheet" href="style/fonts.css">
+	<link rel="stylesheet" href="/create/style/style.css">
+	<link rel="stylesheet" href="/create/style/fonts.css">
     
-    <script src="libs/jquery-3.0.0.min.js"></script>
-    <script src="libs/fabric.min.js" defer></script>
-    <script src="constructor.js" defer></script>
-    <script src="libs/jscolor.js" defer></script>
-    <script src="libs/color-thief.js" defer></script>
+    <script src="/create/libs/jquery-3.0.0.min.js"></script>
+    <script src="/create/libs/fabric.min.js" defer></script>
+    <script src="/create/constructor.js" defer></script>
+    <script src="/create/products_Js/case.js" defer></script>
+    <script src="/create/libs/jscolor.js" defer></script>
+    <script src="/create/libs/color-thief.js" defer></script>
+    <script src="/create/libs/handlebars-v4.0.5.js" defer></script>
     
 </head>
 <body>
@@ -26,7 +28,7 @@
                     <li class="btn icon size">Размер</li>  
                     <li class="btn icon material">Материал</li>        
                     <li class="btn icon count-fragments">Количество фрагментов</li>                
-                    <li class="btn icon causing">Тип нанесения</li>                
+                    <li class="btn icon causing">Tehnology</li>                
                     <li class="capt capt-add mt20">Добавьте</li>
                     <li class="btn icon image">Картинку</li>
                     <li class="btn icon text">Текст</li>
@@ -48,56 +50,69 @@
                 </div>
             </div>
             
-            <div id="items" class="module" style="display:none">
-                <p id="items-title">Предметы:</p>
+            <div id="items" class="product-module module" style="display:block">
+                <p id="products-title">Products</p>
                 <div class="closer"></div>
-                <div class="item" id="poster" data-controls="material,size">
-                    <img src="images/Poster.png">
-                    <p class="item-name">Постер</p>
-                </div>
-                <div class="item" id="t-shirt" data-controls="type,color,size">
-                    <img src="images/T-shirt.png">
-                    <p class="item-name">Футболка</p>
-                </div>
-                <div class="item" id="shirt" data-controls="size,type">
-                    <img src="images/shirt.png">
-                    <p class="item-name">Майка</p>
-                </div>
-                <div class="item" id="pillow" data-controls="material,size">
-                    <img src="images/pillow.png">
-                    <p class="item-name">Подушка</p>
-                </div>
+               
                 <div class="item" id="mouse-pad">
-                    <img src="images/Poster.png">
+                    <img src="/create/images/Poster.png">
                     <p class="item-name">Коврик для мышки</p>
                 </div>
-                <div class="item" id="puzzle" data-controls="size,count-fragments">
-                    <img src="images/Poster.png">
-                    <p class="item-name">Пазл</p>
-                </div> 
-                <div class="item" id="cup" data-controls="model,color">
-                    <img src="images/cup.png">
-                    <p class="item-name">Кружка</p>
+                
+                <div class="item" id="pillow" data-controls="material,size">
+                    <img src="/create/images/pillow.png">
+                    <p class="item-name">Подушка</p>
                 </div>
+                
+                <div class="item" id="shirt" data-controls="size,type">
+                    <img src="/create/images/shirt.png">
+                    <p class="item-name">Майка</p>
+                </div>
+                
+                <div class="item" id="t-shirt" data-controls="type,color,size">
+                    <img src="/create/images/T-shirt.png">
+                    <p class="item-name">Футболка</p>
+                </div>
+                
                 <div class="item" id="case" data-controls="causing,color,model">
-                    <img src="images/case.png">
-                    <p class="item-name">Кейс</p>
+                    <img src="/create/images/case.png">
+                    <p class="item-name">Case</p>
                 </div>    
-                <div class="item" id="magnet" data-controls="size">
-                    <img src="images/Poster.png">
-                    <p class="item-name">Магнит</p>
-                </div> 
-                <div class="item" id="key-ring">
-                    <img src="images/Poster.png">
-                    <p class="item-name">Брелок</p>
-                </div>
-                <div class="item" id="plate" data-controls="size">
-                    <img src="images/plate.png">
+                
+                 <div class="item" id="plate" data-controls="size">
+                    <img src="/create/images/plate.png">
                     <p class="item-name">Тарелка</p>
                 </div> 
-                <div class="item" id="cap" data-controls="color">
+                
+                <div class="item" id="cup" data-controls="model,color">
+                    <img src="/create/images/cup.png">
+                    <p class="item-name">Кружка</p>
+                </div>
+                
+                
+                <div class="item" id="magnet" data-controls="size">
+                    <img src="/create/images/Poster.png">
+                    <p class="item-name">Магнит</p>
+                </div>
+                
+                <div class="item" id="puzzle" data-controls="size,count-fragments">
+                    <img src="/create/images/Poster.png">
+                    <p class="item-name">Пазл</p>
+                </div>
+                
+                 <div class="item" id="poster" data-controls="material,size">
+                    <img src="/create/images/Poster.png">
+                    <p class="item-name">Постер</p>
+                </div>
+                
+                <!--<div class="item" id="key-ring">
+                    <img src="images/Poster.png">
+                    <p class="item-name">Брелок</p>
+                </div>-->
+               
+                <!--<div class="item" id="cap" data-controls="color">
                     <img src="images/cap.png">
-                    <p class="item-name">Кепка</p>
+                    <p class="item-name">Кепка</p>-->
                 </div> 
             
                 <div class="clear"></div>
@@ -143,20 +158,21 @@
                 <p id="type-title">Выберите цвет заготовки:</p>
                 <br>
                 <div class="closer"></div>
-                <button class="jscolor
-                    {valueElement:'valueInput', styleElement:'styleSpan'} btn">
-                    Выбрать цвет
-                </button>
-                <div id="value">
-                    Value: <input id="valueInput" value="ff6699"><br>
-                </div>
-                <div id="style">
-                    Style: <span id="styleSpan"></span>
-                </div>
+                <ul id="color-list">
+                </ul>
             </div>
             
             
-            
+            <script id="colorT" type="text/x-handlebars-template">
+                <li>
+                    <div>
+                        <div class="example" id={{color}}></div>
+                        <p>{{color}}</p>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+            </script>
+
             
             <div class="widgets">
                 <div class="widget widget-layers">

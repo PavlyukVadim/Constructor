@@ -12,7 +12,8 @@ var canvas, ctx,
     imagesMaterial = [], titlesMaterial = [],
     imagesModel = [], titlesModel = [],
     titlesCountFragments = [],
-    titlesSize = [];
+    titlesSize = [],
+    activeProduct;
 
 
 imagesType['t-shirt'] = [];
@@ -143,12 +144,7 @@ $('.module, .text-module').css('right', window.innerWidth * 0.1 + 125 + 'px');
 $('.closer').bind('click', hideAllModules);
 closer = document.getElementsByClassName("closer");
 
-var colorElement = document.getElementById('valueInput');
-colorElement.onchange = function() {
-    console.log(colorElement.value);
-    changeColorMainImage();
-}
-function changeColorMainImage() {
+/*function changeColorMainImage() {
     var colorThief = new ColorThief();
     var color = colorThief.getColor(image);
     var imageData,
@@ -192,13 +188,13 @@ function changeColorMainImage() {
         img.applyFilters(canvas.renderAll.bind(canvas));
         img.set("selectable", false);
         img.set("left", mainImgX - image.width/(2/imgScale));
-        img.set("top", 100);
+        img.set("top", 0);
         //img.globalCompositeOperation = 'source-atop';
         canvas.add(img);
         mainImg = img;
     });    
 }
-
+*/
 controlsElement = document.getElementById('controls');
 controls = controlsElement.children;
 
@@ -468,6 +464,7 @@ underLineElement.onclick = function() {
 
 hideAllControls();  
 hideAllModules(); 
+$('#items').css('display', 'block');
 hideSelectedElements();
 
 function hideSelectedElements() {
@@ -499,6 +496,14 @@ function removeAllModules(id, className) {
 //choose product
 $('.item').bind('click', function(e) {
     var item = this;
+    var itemName = $(".item-name", item).text(); 
+    activeProduct = itemName;
+    
+    if(activeProduct == 'Case') {
+        createCase();    
+    }
+    
+    
     image = new Image();
     image.src = item.getElementsByTagName('img')[0].src;
     imgScale = (canvas.width / 2) / image.width < (canvas.height / 1.2) / image.height ? (canvas.width / 2) / image.width :  (canvas.height / 1.2) / image.height;
@@ -508,7 +513,7 @@ $('.item').bind('click', function(e) {
         img.scale(imgScale);
         img.set("selectable", false);
         img.set("left", mainImgX - (image.width / 2) * (imgScale));
-        img.set("top", 100);
+        img.set("top", 0);
 
         canvas.add(img);
         canvas.renderAll();
@@ -548,7 +553,8 @@ function addHandlerImageModule(item, module, className) {
             img.scale(imgScale);
             img.set("selectable", false);
             img.set("left", mainImgX - image.width/(2/imgScale));
-            img.set("top", 100);
+            //img.set("top", 0);
+            img.setTop(0);
             canvas.add(img);
             mainImg = img;
             
@@ -567,7 +573,7 @@ function addHandlerAddImages(item, image, width) {
         fabric.Image.fromURL(image.src, function(img) {
             img.scale(mainImg.width / width);
             img.set("left", mainImgX - (mainImg.width / 2));
-            img.set("top", 125);
+            img.set("top", 0);
             img.globalCompositeOperation = 'source-atop';
             canvas.add(img);
             currentImageElement = img;
