@@ -10,6 +10,13 @@
     <script src="/create/libs/fabric.min.js" defer></script>
     <script src="/create/constructor.js" defer></script>
     <script src="/create/products_Js/case.js" defer></script>
+    <script src="/create/products_Js/tshirt.js" defer></script>
+    <script src="/create/products_Js/tankTop.js" defer></script>
+    <script src="/create/products_Js/pillow.js" defer></script>
+    <script src="/create/products_Js/poster.js" defer></script>
+    <script src="/create/products_Js/puzzle.js" defer></script>
+    <script src="/create/products_Js/ceramicMug.js" defer></script>
+    
     <script src="/create/libs/jscolor.js" defer></script>
     <script src="/create/libs/color-thief.js" defer></script>
     <script src="/create/libs/handlebars-v4.0.5.js" defer></script>
@@ -23,16 +30,17 @@
                     <li class="capt capt-select">Выберите</li>
                     <li class="btn icon base">Предмет</li>
                     <li class="btn icon model">Модель</li>
-                    <li class="btn icon color">Цвет</li>
-                    <li class="btn icon type">Тип</li>
-                    <li class="btn icon size">Размер</li>  
-                    <li class="btn icon material">Материал</li>        
-                    <li class="btn icon count-fragments">Количество фрагментов</li>                
+                    <li class="btn icon color">Color</li>
+                    <li class="btn icon type">Type</li>
+                    <li class="btn icon size">Size</li>  
+                    <li class="btn icon material">Material </li>        
+                    <li class="btn icon count-fragments">Number of pieces</li>                
                     <li class="btn icon causing">Tehnology</li>                
                     <li class="capt capt-add mt20">Добавьте</li>
                     <li class="btn icon image">Картинку</li>
                     <li class="btn icon text">Текст</li>
                     <li class="btn orange icon order">Заказать</li>
+                    <li class="btn icon clean">Очистить</li>
                 </ul>
             </nav>
 
@@ -56,22 +64,22 @@
                
                 <div class="item" id="mouse-pad">
                     <img src="/create/images/Poster.png">
-                    <p class="item-name">Коврик для мышки</p>
+                    <p class="item-name">MousePad</p>
                 </div>
                 
                 <div class="item" id="pillow" data-controls="material,size">
                     <img src="/create/images/pillow.png">
-                    <p class="item-name">Подушка</p>
+                    <p class="item-name">Pillow</p>
                 </div>
                 
                 <div class="item" id="shirt" data-controls="size,type">
                     <img src="/create/images/shirt.png">
-                    <p class="item-name">Майка</p>
+                    <p class="item-name">Tank Top</p>
                 </div>
                 
                 <div class="item" id="t-shirt" data-controls="type,color,size">
                     <img src="/create/images/T-shirt.png">
-                    <p class="item-name">Футболка</p>
+                    <p class="item-name">T-Shirt</p>
                 </div>
                 
                 <div class="item" id="case" data-controls="causing,color,model">
@@ -81,28 +89,28 @@
                 
                  <div class="item" id="plate" data-controls="size">
                     <img src="/create/images/plate.png">
-                    <p class="item-name">Тарелка</p>
+                    <p class="item-name">Ceramic Plate</p>
                 </div> 
                 
                 <div class="item" id="cup" data-controls="model,color">
                     <img src="/create/images/cup.png">
-                    <p class="item-name">Кружка</p>
+                    <p class="item-name">Ceramic Mug</p>
                 </div>
                 
                 
                 <div class="item" id="magnet" data-controls="size">
                     <img src="/create/images/Poster.png">
-                    <p class="item-name">Магнит</p>
+                    <p class="item-name">Fridge Magent</p>
                 </div>
                 
                 <div class="item" id="puzzle" data-controls="size,count-fragments">
                     <img src="/create/images/Poster.png">
-                    <p class="item-name">Пазл</p>
+                    <p class="item-name">Puzzle</p>
                 </div>
                 
                  <div class="item" id="poster" data-controls="material,size">
                     <img src="/create/images/Poster.png">
-                    <p class="item-name">Постер</p>
+                    <p class="item-name">Poster</p>
                 </div>
                 
                 <!--<div class="item" id="key-ring">
@@ -114,7 +122,6 @@
                     <img src="images/cap.png">
                     <p class="item-name">Кепка</p>-->
                 </div> 
-            
                 <div class="clear"></div>
             </div>
             
@@ -122,38 +129,31 @@
                 <p id="type-title">Выберите модель:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="type" class="module" style="display:none">
                 <p id="type-title">Выберите тип:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="material" class="text-module" style="display:none">
                 <p id="type-title">Выберите материал:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="count-fragments" class="text-module" style="display:none">
                 <p id="type-title">Выберите количество фрагментов:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="causing" class="text-module" style="display:none">
                 <p id="type-title">Выберите тип нанесения:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="size" class="text-module" style="display:none">
                 <p id="type-title">Выберите размер:</p>
                 <div class="closer"></div>
             </div>
-            
             <div id="images" class="module" style="display:none">
                 <p id="type-title">Выберите картинку:</p>
                 <div class="closer"></div>
                 <input type="file" id="choose-file">
             </div>
-            
             <div id="colors" class="module" style="display:none">
                 <p id="type-title">Выберите цвет заготовки:</p>
                 <br>
@@ -221,7 +221,7 @@
                 </div>
          
         </div>
-        <div id="canvases">
+            <div id="canvases">
             <canvas id="canvas"></canvas>
         </div>
     </div>

@@ -1,4 +1,4 @@
-function createCase() {
+function createTshirt() {
     var colors = [{color:"White"},{color:"Black"},{color:"Transparent"}];
     for (var i = 0; i < colors.length; i++) {
         var theData = colors[i];
@@ -16,15 +16,5 @@ function createCase() {
         var color = $("p", this).text();
         selectedElements['color'].innerHTML = color;
         $("#colors").css("display", "none"); 
-    });
+    });  
 }
-
-$(".text-module").bind("click", function() {
-   var causing = $(".in .causing").text();
-   if (causing == '3d') {
-       $("#colors, .color").css("display", "none");    
-   }
-    if (causing == '2d') {
-        $(".color").css("display", "block");
-   }
-});

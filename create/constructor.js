@@ -22,17 +22,17 @@ imagesType['t-shirt'][1] = "images/T_shirt/002.png";
 imagesType['t-shirt'][2] = "images/T_shirt/003.png";
 
 titlesType['t-shirt'] = [];
-titlesType['t-shirt'][0] = "Женская";
-titlesType['t-shirt'][1] = "Мужская";
-titlesType['t-shirt'][2] = "Унисекс";
+titlesType['t-shirt'][0] = "Woman";
+titlesType['t-shirt'][1] = "Man";
+titlesType['t-shirt'][2] = "Unisex";
 
 imagesType['shirt'] = [];
 imagesType['shirt'][0] = "images/shirts/001.png";
 imagesType['shirt'][1] = "images/shirts/002.png";
 
 titlesType['shirt'] = [];
-titlesType['shirt'][0] = "Мужская";
-titlesType['shirt'][1] = "Женская";
+titlesType['shirt'][0] = "Man";
+titlesType['shirt'][1] = "Woman";
 
 titlesMaterial['poster'] = [];
 titlesMaterial['pillow'] = [];
@@ -40,8 +40,8 @@ titlesMaterial['pillow'] = [];
 titlesMaterial['poster'][0] = "Глянец";
 titlesMaterial['poster'][1] = "Матовая";
 
-titlesMaterial['pillow'][0] = "Плюш";
-titlesMaterial['pillow'][1] = "Cатин";
+titlesMaterial['pillow'][0] = "Plush";
+titlesMaterial['pillow'][1] = "Satin";
 
 imagesModel['cup'] = [], titlesModel['cup'] = [];
 imagesModel['case'] = [], titlesModel['case'] = [];
@@ -70,18 +70,38 @@ titlesCountFragments['puzzle'] = [];
 titlesCountFragments['puzzle'][0] = '120 шт';
 titlesCountFragments['puzzle'][1] = '240 шт';
 
-titlesSize['poster'] = [];
-titlesSize['poster'][0] = 'А1';
-titlesSize['poster'][1] = 'A2';
-
 titlesSize['puzzle'] = [];
 titlesSize['puzzle'][0] = 'А3';
 titlesSize['puzzle'][1] = 'A4';
 
+titlesSize['poster'] = [];
+titlesSize['poster'][0] = 'А1';
+titlesSize['poster'][1] = 'A2';
+
+titlesSize['t-shirt'] = [];
+titlesSize['t-shirt'][0] = 'S';
+titlesSize['t-shirt'][1] = 'M';
+titlesSize['t-shirt'][2] = 'L';
+titlesSize['t-shirt'][3] = 'XL';
+titlesSize['t-shirt'][4] = 'XXL';
+titlesSize['t-shirt'][5] = 'XXXL';
+
+titlesSize['shirt'] = [];
+titlesSize['shirt'][0] = 'S';
+titlesSize['shirt'][1] = 'M';
+titlesSize['shirt'][2] = 'L';
+titlesSize['shirt'][3] = 'XL';
+titlesSize['shirt'][4] = 'XXL';
+
 titlesSize['magnet'] = [];
-titlesSize['magnet'][0] = 'А7';
-titlesSize['magnet'][1] = 'A6';
-titlesSize['magnet'][2] = 'A5';
+titlesSize['magnet'][0] = 'А6';
+titlesSize['magnet'][1] = 'A5';
+titlesSize['magnet'][2] = 'A4';
+
+titlesSize['pillow'] = [];
+titlesSize['pillow'][0] = '35x35 cm';
+titlesSize['pillow'][1] = '35х45 cm';
+
 
 titlesCausing = [];
 titlesCausing['case'] = [];
@@ -131,7 +151,7 @@ modulesArr.basesElement = document.getElementById("items");
 modulesArr.typesElement = document.getElementById('type');
 modulesArr.materialsElement = document.getElementById('material');
 modulesArr.modelsElement = document.getElementById('model');
-modulesArr.countFragmentsElement = document.getElementById('count-frarments');
+modulesArr.countFragmentsElement = document.getElementById('count-fragments');
 modulesArr.sizesElement = document.getElementById('size');
 modulesArr.imagesElement = document.getElementById('images');
 modulesArr.colorsElement = document.getElementById('colors');
@@ -209,6 +229,18 @@ var selectedElements = [];
     selectedElements['material'] = selectedBlockElement.getElementsByClassName('material')[0];
     selectedElements['count-fragments'] = selectedBlockElement.getElementsByClassName('count-fragments')[0];
  selectedElements['causing'] = selectedBlockElement.getElementsByClassName('causing')[0];
+
+//Clean All
+$(".clean").bind("click", function() {
+    hideAllControls();
+    hideAllModules();
+    canvas.clear();
+    $(".in div").each(function() {
+        console.log(this);
+        this.innerHTML = '';
+    })
+});
+
 
 
 var widgetElement = document.getElementsByClassName('widgets')[0],
@@ -464,6 +496,7 @@ underLineElement.onclick = function() {
 
 hideAllControls();  
 hideAllModules(); 
+
 $('#items').css('display', 'block');
 hideSelectedElements();
 
@@ -477,7 +510,6 @@ function hideSelectedElements() {
 $('#controls .btn').bind('click', function() {
     hideAllModules();
     var selector = "#" + this.classList[2];
-    console.log(selector);
     selector = selector == "#base" ? "#items" : selector;
     if (selector ==  "#color" || selector == "#image") {
         selector += 's';    
@@ -498,11 +530,6 @@ $('.item').bind('click', function(e) {
     var item = this;
     var itemName = $(".item-name", item).text(); 
     activeProduct = itemName;
-    
-    if(activeProduct == 'Case') {
-        createCase();    
-    }
-    
     
     image = new Image();
     image.src = item.getElementsByTagName('img')[0].src;
@@ -533,7 +560,15 @@ $('.item').bind('click', function(e) {
     hideAllControls();
     var dataOfItemControls = item.dataset.controls;
     dataOfItemControls = dataOfItemControls.split(',');
-    displayControls(dataOfItemControls, item);       
+    displayControls(dataOfItemControls, item);   
+    
+    if(activeProduct == 'Case') {createCase();}
+    if(activeProduct == 'T-Shirt') {createTshirt();}
+    if(activeProduct == 'Tank Top') {createTankTop();}
+    if(activeProduct == 'Pillow') {createPillow();}
+    if(activeProduct == 'Poster') {createPoster();}
+    if(activeProduct == 'Puzzle') {createPuzzle();}
+    if(activeProduct == 'Ceramic Mug') {createCeramicMug();}
 });
 
 // select type of products
@@ -597,6 +632,7 @@ function addHandlerTextModule(item, module) {
 }
 
 function displayControls(arrControls, element) {
+    console.log(arrControls);
     for (var i = 0; i < controls.length; i++) {
         arrControls.forEach(function(dataControl){
             if (controls[i].classList.contains(dataControl)) {
@@ -616,7 +652,7 @@ function displayControls(arrControls, element) {
         removeAllModules('model', 'type-item');
         createModule(element.id, imagesModel[element.id], titlesModel[element.id], 'model', modulesArr.modelsElement);
     }
-    if(arrControls.indexOf('countFragments') != -1) {
+    if(arrControls.indexOf('count-fragments') != -1) {
         removeAllModules('count-fragments', 'text-type-item');
         createModule(element.id, false, titlesCountFragments[element.id], 'count-fragments', modulesArr.countFragmentsElement);
     }  
@@ -631,7 +667,7 @@ function displayControls(arrControls, element) {
 }
 
 function hideAllControls() {
-    for (var i = 2; i < controls.length - 4; i++) {
+    for (var i = 2; i < controls.length - 5; i++) {
         controls[i].style.display = "none";
     }
 }
