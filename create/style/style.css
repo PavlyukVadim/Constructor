@@ -66,7 +66,7 @@ body {
 .btn.icon:before {
 	content: "";
 	display: block;
-	width: 30px;
+	width: 31px;
 	position: absolute;
 	left: -1px;
 	top: -1px;
@@ -88,6 +88,29 @@ body {
 nav .btn.base:before, nav .btn.age:before, nav .btn.model:before, nav .btn.size:before, nav .btn.color:before, nav .btn.method:before, nav .btn.image:before, nav .btn.text:before, nav .btn.figure:before, nav .btn.order:before {
     background-image: url(../images/sprite.png);
 }
+
+nav .btn.clean{
+   background-image: url(../images/icons/clean.png); 
+   background-repeat: no-repeat;
+}
+nav .btn.type{
+   background-image: url(../images/icons/type.png); 
+   background-repeat: no-repeat;
+}
+nav .btn.material{
+   background-image: url(../images/icons/material.png); 
+   background-repeat: no-repeat;
+}
+nav .btn.count-fragments{
+   background-image: url(../images/icons/puzzle-piece.png); 
+   background-repeat: no-repeat;
+}
+nav .btn.causing{
+   background-image: url(../images/icons/technology.png); 
+   background-repeat: no-repeat;
+}
+
+
 
 nav .btn.base:before {
     background-position: -144px 3px;

@@ -22,9 +22,9 @@ function createCase() {
 $(".text-module").bind("click", function() {
    var causing = $(".in .causing").text();
    if (causing == '3d') {
-       $("#colors, .color").css("display", "none");    
+       $("#colors, #controls .color").css("display", "none");    
    }
     if (causing == '2d') {
-        $(".color").css("display", "block");
+        $("#controls .color").css("display", "block");
    }
 });

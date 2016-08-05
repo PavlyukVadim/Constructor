@@ -15,7 +15,6 @@ var canvas, ctx,
     titlesSize = [],
     activeProduct;
 
-
 imagesType['t-shirt'] = [];
 imagesType['t-shirt'][0] = "images/T_shirt/001.png";
 imagesType['t-shirt'][1] = "images/T_shirt/002.png";
@@ -77,6 +76,7 @@ titlesSize['puzzle'][1] = 'A4';
 titlesSize['poster'] = [];
 titlesSize['poster'][0] = 'А1';
 titlesSize['poster'][1] = 'A2';
+titlesSize['poster'][2] = 'A3';
 
 titlesSize['t-shirt'] = [];
 titlesSize['t-shirt'][0] = 'S';
@@ -232,13 +232,21 @@ var selectedElements = [];
 
 //Clean All
 $(".clean").bind("click", function() {
+    var layersList = document.getElementsByClassName('layers-list')[0], layers = layersList.getElementsByClassName('layer');
+
     hideAllControls();
     hideAllModules();
     canvas.clear();
     $(".in div").each(function() {
         console.log(this);
         this.innerHTML = '';
-    })
+    });
+    for (var i = 0; i < layers.length; i++) {
+        layers[i].parentNode.removeChild(layers[i]);
+    }
+    widgetElement.style.display = 'none';
+    
+    
 });
 
 
