@@ -4,12 +4,14 @@ var filesElement, files,
     images = [], canvasesElements, 
     editCanvasElement, fabricEditCanvas,
     editScale = 0.4,
-    logos = [];
+    logos = [],
+    downloadsElement;
 
 filesElement = document.getElementById('files');
 body = document.getElementsByTagName('body')[0];
 canvasesElements = document.getElementById("canvases");
 editCanvasElement = document.getElementById("edit-canvas");
+downloadsElement = document.getElementById("downloads");
 
 window.onload = function(){
     
@@ -61,8 +63,14 @@ function getImage(i){
 function createCanvas(i){
     return function() {
         console.log(i);
-        var div = document.createElement('div');
-        var scale, width;
+        var scale, width, div, a;
+        
+        div = document.createElement('div');
+        a = document.createElement('a');
+        a.id = "download" + i;
+        a.onclick = downloadCanvas(i, a, "test.png");
+        a.innerHTML = i + 1 + "";
+        
         canvases[i] = document.createElement("canvas");
         canvases[i].id = "canvas" + i;
         
@@ -79,6 +87,9 @@ function createCanvas(i){
         
         div.appendChild(canvases[i]);
         canvasesElements.appendChild(div);
+        downloadsElement.appendChild(a);
+        
+        
         fabricCanvas[i] = new fabric.Canvas("canvas" + i);
         fabricCanvas[i].imageScale = 1 / scale;
         drawMainPhotos(i, 1/scale);
@@ -148,5 +159,12 @@ document.onkeyup = function(e) {
     if (e.keyCode == 46) {
         fabricEditCanvas.remove(fabricEditCanvas.getActiveObject());
         reDraw();
+    }
+}
+
+function downloadCanvas(i, link, filename) {
+    return function() {
+        link.href = fabricCanvas[i].toDataURL('png');
+        link.download = filename;   
     }
 }

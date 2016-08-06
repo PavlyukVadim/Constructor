@@ -34,6 +34,7 @@ canvas{
     padding: 5px;
     margin: 5px;
     position: relative;
+    min-width: 200px;
 }
 .item p{
     text-align: center;
@@ -50,4 +51,17 @@ canvas{
     z-index: 999;
     opacity: 0.7;
     background-color: #C5CFDF;
+}
+#downloads{
+    width: 200px;
+    overflow-x: scroll;
+}
+#downloads a{
+    font: 15px Arial;
+    margin-right: 5px;
+}
+#downloads a:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
 }
