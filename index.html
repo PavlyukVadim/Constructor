@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <script src="libs/jquery-3.0.0.min.js"></script>
+        <script src="libs/fabric.js"></script>
+        <script src="common.js" defer></script>
+        
+    </head>
+    <body>
+        <div id="controls">
+            <div class="item">
+                <input id="files" type="file" multiple>
+                <p>Виберіть всі фото</p>
+            </div>
+            <div class="item">
+                <input id="logo" type="file">
+                <p>Завантажити логотип</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="edit-field">
+            <canvas id="edit-canvas"></canvas>
+        </div>
+        <div id="canvases">
+        </div>
+    </body>    
+</html>
