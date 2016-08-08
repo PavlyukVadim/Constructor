@@ -5,13 +5,16 @@ var filesElement, files,
     editCanvasElement, fabricEditCanvas,
     editScale = 0.4,
     logos = [],
-    downloadsElement;
+    downloadsElement,
+    countPhotoElement,
+    countPhoto = 2;
 
 filesElement = document.getElementById('files');
 body = document.getElementsByTagName('body')[0];
 canvasesElements = document.getElementById("canvases");
 editCanvasElement = document.getElementById("edit-canvas");
 downloadsElement = document.getElementById("downloads");
+countPhotoElement = document.getElementById("count-photo");
 
 window.onload = function(){
     
@@ -74,7 +77,7 @@ function createCanvas(i){
         canvases[i] = document.createElement("canvas");
         canvases[i].id = "canvas" + i;
         
-        width = (window.innerWidth - 100) / 2;
+        width = (window.innerWidth - 100) / countPhoto;
         scale = images[i].width / width;
         if(scale > 1) {
             canvases[i].width = images[i].width / scale;
@@ -167,4 +170,8 @@ function downloadCanvas(i, link, filename) {
         link.href = fabricCanvas[i].toDataURL('png');
         link.download = filename;   
     }
+}
+
+countPhotoElement.onchange = function() {
+    countPhoto = this.value;
 }
