@@ -34,7 +34,10 @@ canvas{
     padding: 5px;
     margin: 5px;
     position: relative;
-    min-width: 200px;
+    width: 130px;
+}
+input{
+    width: 128px;
 }
 .item p{
     text-align: center;
@@ -53,7 +56,7 @@ canvas{
     background-color: #C5CFDF;
 }
 #downloads{
-    width: 200px;
+    width: 130px;
     overflow-x: scroll;
 }
 #downloads a{
@@ -64,4 +67,213 @@ canvas{
     background-color: black;
     color: white;
     cursor: pointer;
+}
+/*--------------widgets-----------*/
+
+.widgets{
+    display: none;
+    margin-left: 10%;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 10px 10px 0 10px;
+    background-color: #f3f3f3;
+    border-right: 1px solid #ddd;
+    box-shadow: 0 1px 0 #ddd;
+    left: 0;
+    z-index: 800;
+    width: 270px;
+    max-height: 600px;
+}
+
+.widget h3{
+    line-height: 29px;
+    padding-bottom: 1px;
+    background-color: #e8e8e8;
+    border-radius: 3px;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    margin-bottom: 10px;
+}
+
+.layers-list {
+    padding: 0 4px 4px 4px;
+    background-color: #e8e8e8;
+    overflow: auto;
+}
+
+.layers-list .layer {
+    padding-top: 4px;
+    position: relative;
+}
+
+
+.layers-list .layer-content {
+    overflow: hidden;
+    background-color: #f3f3f3;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    height: 40px;
+}
+.layer.image .img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.layer.image .img img{
+    display: block;
+    max-width: 40px;
+    max-height: 40px;
+    margin: 0 auto;
+}
+.layers-list .layer-content h4 {
+    text-shadow: 0 1px 0 #fff;
+    margin-top: 10px;
+}
+.layers-list .layer-content:hover {
+    background-color: #fff;
+}
+
+.widget-text {
+    z-index: 999;
+    opacity: 0.8;
+    position: fixed;
+    width: 265px;
+    display: none;
+    padding-left: 10px;
+    padding-top: 10px;
+    background: #DCE7F5;
+}
+
+.widget h3 {
+    line-height: 29px;
+    padding-bottom: 1px;
+    background-color: #e8e8e8;
+    border-radius: 3px;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    margin-bottom: 10px;
+}
+
+
+.widget .widget-text h4{
+    max-width: 150px;
+    overflow: hidden;
+}
+
+#fonts{
+    margin-top: 40px;
+    max-height: 375px;
+    overflow-y: scroll;
+    background-color: #e8e8e8;
+}
+
+.font-list li.active > div {
+    background-color: #aaa;
+    cursor: default;
+}
+
+.font-list li > div {
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #f3f3f3;
+    height: 30px;
+    font-size: 25px;
+    line-height: 30px;
+    margin: 0 7px 0 7px;
+    text-align: center;
+}
+.font-list li{
+    margin-top: 5px;
+}
+
+.font-list li > div:hover {
+    background-color: #fff;
+}
+
+.btn-white {
+    display: inline-block;
+    background-color: #fff;
+    cursor: pointer;
+    line-height: 27px;
+    width: 30px;
+    padding-bottom: 1px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0,0,0,.1), inset 0 -20px 20px -20px rgba(0,0,0,.1);
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    color: #545454;
+}
+
+#color-list{
+    list-style: none;
+}
+#color-list p{
+    padding-top: 15px;
+}
+#color-list .example{
+    width: 50px;
+    height: 50px;
+    background-color: Black;
+    float: left;
+}
+#color-list li{
+    display: block;
+    font: 18px Arial;
+    margin-bottom: 5px;
+    text-align: center;
+}
+#color-list li:hover{
+    cursor: pointer;
+    border: 1px solid #EF7A57;
+    border-radius: 3px;
+}
+
+.widget-text .align-left, .widget-text .align-center, .widget-text .align-right {
+    float: left;
+    height: 30px;
+    margin-top: 3px;
+    margin-left: 10px;
+}
+
+.btn-white:hover {
+    border-color: #aaa;
+    box-shadow: 0 0 5px rgba(0,0,0,.3), inset 0 -20px 20px -20px rgba(0,0,0,.1);
+}
+
+.btn-white.active {
+    color: #545454;
+    text-decoration: none;
+    border-color: #f90;
+    box-shadow: 0 0 5px rgba(255,153,0,.3), inset 0 -20px 20px -20px rgba(0,0,0,.1), inset 0 0 0 1px #f90;
+    cursor: default;
+}
+#products-title{
+    text-align: center;
+}
+
+#input-text{
+    width: 250px;
+    height: 100px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    resize: none;
+    overflow: auto;
+    display: inline-block;
+    box-sizing: border-box;
+    font-size: 15px;
+    color: #545454;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding-left: 8px;
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.1);
+}
+.font{
+    padding: 0 10px;
+    margin-left: 10px
 }
