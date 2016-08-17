@@ -1,0 +1,131 @@
+body, div, menu, section, header, footer, ul{
+  padding: 0;
+  margin: 0;
+}
+ul{
+  list-style: none;
+}
+li{
+  display: inline-block;
+}
+.navbar-default {
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+body{
+  font: Arial;
+}
+.main_head, section{
+  min-height: 600px;
+  position: relative;
+  z-index: 1;
+}
+.parallax-window{
+  left: 0;
+}
+.row{
+  margin: 0;
+}
+menu{
+  background-color: #fff;
+  height: 70px;
+  position: fixed;
+  width: 100%;
+}
+menu li{
+  margin: 25px 0 0 45px;
+  text-transform: uppercase;
+  font: 20px Arial;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #fff;
+  background-color: rgba(187, 13, 77, 0.85);
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .active > a {
+  background-image: none;
+}
+.navbar-default .navbar-nav > li > a {
+  color: rgb(187, 13, 77);
+  padding: 15px 45px;
+  font-size: 22px;
+}
+
+.navbar-default{
+  border-radius: 0px;
+}
+.nav li a{
+  text-transform: uppercase;
+}
+.glyphicon{
+  font-size: 20px;
+}
+.header-content{
+  min-height: 550px;
+  position: relative;
+}
+
+.header-content .row div .img_1{
+  z-index: 1;
+}
+.header-content .row div .img_2{
+  z-index: 1;
+  left: 27%;
+}
+
+.header-content .row div{
+  position: relative;
+}
+
+.header-content{
+  position: relative;
+}
+
+.header-content .row{
+  position: absolute;
+  height: 100%;
+}
+
+.header-description{
+  position: absolute;
+  height: 40%;
+  color: #fff;
+  font: 50px Arial bold;
+  padding: 8% 0 5% 0;
+  text-align: center;
+  text-transform: uppercase;
+  z-index: 999;
+}
+
+.header-content .row .col-lg-6{
+  position: relative;
+  height: 60%;
+}
+
+.header-content .row div .img_1, .header-content .row div .img_2{
+  position: absolute;
+  width: 51%;
+  bottom: 10%;
+}
+
+#form-wrap{
+  padding: 3%;
+  background-color: #f5f5f5;
+  border-radius: 2%;
+}
+#slogan{
+  font: 31px Arial;
+  color: rgb(187, 13, 77);
+}
+.btn-primary{
+  background: rgba(187, 13, 77, 0.85);
+  border-color: rgba(255, 0, 94, 0.85);
+}
+.btn-primary:active, .btn-primary:hover{
+  background: rgb(187, 13, 77);
+  border-color: rgb(255, 0, 94);
+}
+
+#form-wrap{
+  position: absolute;
+  bottom: 25%;  
+}
