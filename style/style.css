@@ -1,12 +1,9 @@
-body, div, menu, section, header, footer, ul{
+body, div, menu, section, header, ul, footer{
   padding: 0;
   margin: 0;
 }
 ul{
   list-style: none;
-}
-li{
-  display: inline-block;
 }
 .navbar-default {
   background-image: none;
@@ -15,10 +12,34 @@ li{
 body{
   font: Arial;
 }
+.loader{
+  background: none repeat scroll 0 0 #d8d8d8;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+.loader_inner{
+  background-image: url("../image/weight-lifting-smiley-emoticon.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 110px;
+  width: 140px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -55px 0 0 -70px;
+}
+
+
 .main_head, section{
   min-height: 600px;
   position: relative;
-  z-index: 1;
 }
 .parallax-window{
   left: 0;
@@ -46,11 +67,11 @@ menu li{
 }
 .navbar-default .navbar-nav > li > a {
   color: rgb(187, 13, 77);
-  padding: 15px 45px;
+  padding: 15px 35px;
   font-size: 22px;
 }
-
 .navbar-default{
+  z-index: 1000;
   border-radius: 0px;
 }
 .nav li a{
@@ -63,7 +84,9 @@ menu li{
   min-height: 550px;
   position: relative;
 }
-
+nav{
+  z-index: 999;
+}
 .header-content .row div .img_1{
   z-index: 1;
 }
@@ -128,4 +151,104 @@ menu li{
 #form-wrap{
   position: absolute;
   bottom: 25%;  
+}
+
+section{
+  padding: 85px 0;
+}
+.section-title{
+  text-align: center;
+  font: 30px Arial;
+  text-transform: uppercase;
+}
+
+.section-explanation{
+  font-size: 20px;
+  text-align: center;
+  padding: 0 30px;
+  margin-bottom: 30px;
+}
+
+.section-explanation:after{
+  content: "";
+  height: 2px;
+  width: 70%;
+  position: absolute;
+  background: rgb(255, 0, 94);
+  left: 50%;
+  margin-left: -35%;
+  margin-top: 40px;
+}
+.dark{
+  color: #fff;  
+}
+.cover{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -99;
+  background-color: rgba(0,0,0,0.6);
+}
+footer{
+  position: absolute;
+  background-color: #d1d1d1;
+  width: 100%;
+}
+.footer-title{
+  padding: 20px 0 0 0;
+  font: 18px Arial;
+  text-transform: uppercase;
+}
+.footer-description{
+  padding-right: 30px;
+}
+#autor{
+  text-align: center;
+}
+footer .row div ul li{
+  padding: 3px 0;
+}
+hr{
+  margin: 10px;
+}
+
+.review-title{
+  margin: 20px;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 21px;
+  font-family: Arial;
+}
+.review-photo-1{
+  height: 190px;
+  background-image: url(../image/20160801022602.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.review{
+  min-height: 190px;
+  background: #2c2a2a;
+  color: #fff;
+  font: 18px Arial;
+  position: relative;
+}
+.reviewer{
+  position: absolute;
+  right: 10%;
+  font-weight: 600;
+}
+.review-right{
+  padding-right: 8%;  
+}
+.review-left{
+  padding-left: 8%;
+}
+.reviews .row{
+  margin-bottom: 2px;
+}
+.reviews{
+  padding-bottom: 10px;
 }
