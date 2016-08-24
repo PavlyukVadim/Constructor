@@ -12,7 +12,7 @@ $(document).ready(function ($) {
   $(".left-side-review").animated("fadeInLeft", "fadeOutDown");
   $(".img_1, .img_2, .img_3, .thumbnail img").animated("flipInY", "fadeOutDown");
   
-  $("a[rel='m_PageScroll2id']").mPageScroll2id({/*offset:50*/});
+  $("a[rel='m_PageScroll2id']").mPageScroll2id();
   
 });
 $(window).resize(function () {
