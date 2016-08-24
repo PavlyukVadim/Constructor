@@ -36,7 +36,6 @@ body{
   margin: -55px 0 0 -70px;
 }
 
-
 .main_head, section{
   min-height: 600px;
   position: relative;
@@ -61,6 +60,9 @@ menu li{
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
   color: #fff;
   background-color: rgba(187, 13, 77, 0.85);
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+   color: #fff;
 }
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .active > a {
   background-image: none;
@@ -87,27 +89,47 @@ menu li{
 nav{
   z-index: 999;
 }
-.header-content .row div .img_1{
-  z-index: 1;
-}
-.header-content .row div .img_2{
-  z-index: 1;
-  left: 27%;
-}
-
-.header-content .row div{
-  position: relative;
-}
-
-.header-content{
-  position: relative;
-}
-
-.header-content .row{
+.img_1, .img_2, .img_3, .row div .bar{
   position: absolute;
-  height: 100%;
+}
+section, .header-content{
+  position: relative;
 }
 
+
+.action .row, .header-content .row{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 40%;
+}
+
+.row div .img_1{
+  left: 24%;
+  width: 51%;
+  bottom: 10%;
+}
+.row div .img_2{
+  left: 4%;
+  width: 51%;
+  bottom: 10%;
+}
+.row div .img_3{
+  width: 45%;
+  bottom: 14%;
+  left: 45%;
+}
+.row div .bar{
+  width: 100%;
+  bottom: 8%;
+  left: 35%;
+}
+.photos{
+  position: relative;
+}
+.header-content, .action{
+  position: relative;
+}
 .header-description{
   position: absolute;
   height: 40%;
@@ -119,19 +141,13 @@ nav{
   z-index: 999;
 }
 
-.header-content .row .col-lg-6{
+.header-content .row .col-lg-6, .action .row .col-lg-6{
   position: relative;
   height: 60%;
 }
 
-.header-content .row div .img_1, .header-content .row div .img_2{
-  position: absolute;
-  width: 51%;
-  bottom: 10%;
-}
-
 #form-wrap{
-  padding: 3%;
+  padding: 2%;
   background-color: #f5f5f5;
   border-radius: 2%;
 }
@@ -148,7 +164,7 @@ nav{
   border-color: rgb(255, 0, 94);
 }
 
-#form-wrap{
+#form-wrap-top{
   position: absolute;
   bottom: 25%;  
 }
@@ -251,4 +267,15 @@ hr{
 }
 .reviews{
   padding-bottom: 10px;
+}
+.thumbnail img{
+  width: 50%;
+}
+.photo-orders img{
+  width: 100%;
+  height: 100%;
+  border-radius: 4%;
+}
+#ordering .row{
+  margin-top: 5%;
 }
