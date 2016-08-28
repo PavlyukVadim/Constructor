@@ -11,6 +11,7 @@ ul{
 }
 body{
   font: Arial;
+  min-width: 500px;
 }
 .loader{
   background: none repeat scroll 0 0 #d8d8d8;
@@ -107,16 +108,16 @@ section, .header-content{
 .row div .img_1{
   left: 24%;
   width: 51%;
-  bottom: 10%;
+  bottom: 1%;
 }
 .row div .img_2{
   left: 4%;
   width: 51%;
-  bottom: 10%;
+  bottom: 1%;
 }
 .row div .img_3{
   width: 45%;
-  bottom: 14%;
+  bottom: 1.4%;
   left: 45%;
 }
 .row div .bar{
@@ -269,7 +270,10 @@ hr{
   padding-bottom: 10px;
 }
 .thumbnail img{
-  width: 50%;
+  height: 400px;
+}
+.thumbnail{
+  min-height: 680px;
 }
 .photo-orders img{
   width: 100%;
@@ -278,4 +282,14 @@ hr{
 }
 #ordering .row{
   margin-top: 5%;
+}
+
+.product-info{
+  position: relative;
+}
+.price{
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  font-size: 20px;
 }

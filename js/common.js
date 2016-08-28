@@ -10,11 +10,17 @@ $(document).ready(function ($) {
   $(".section-explanation").animated("fadeInUp", "fadeOutDown");
   $(".right-side-review").animated("fadeInRight", "fadeOutDown");
   $(".left-side-review").animated("fadeInLeft", "fadeOutDown");
-  $(".img_1, .img_2, .img_3, .thumbnail img").animated("flipInY", "fadeOutDown");
+  $(".img_1, .img_2, .img_3, .thumbnail img, .bar").animated("flipInY", "fadeOutDown");
   
   $("a[rel='m_PageScroll2id']").mPageScroll2id();
+  $(".photos").css({
+    bottom : ($(".photos").height() - $(".img_1").height()) / 1.7
+  });
   
 });
 $(window).resize(function () {
   $(".review-photo-1").css("height", $(".review").height());
+  $(".photos").css({
+    bottom : ($(".photos").height() - $(".img_1").height()) / 1.7
+  });
 });
