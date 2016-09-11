@@ -24,3 +24,8 @@ $(window).resize(function () {
     bottom : ($(".photos").height() - $(".img_1").height()) / 1.7
   });
 });
+
+$('.btn-order').bind('click', function() {
+  var taste = $(this).data('type');
+  $("#select").find("option:contains(" + taste + ")").attr("selected", "selected");
+})

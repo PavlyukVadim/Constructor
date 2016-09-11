@@ -135,12 +135,16 @@ section, .header-content{
   position: absolute;
   height: 40%;
   color: #fff;
-  font: 50px Arial bold;
+  font: 30px Arial bold;
   padding: 8% 0 5% 0;
   text-align: center;
   text-transform: uppercase;
   z-index: 999;
 }
+.header-description h1{
+  padding: 0 100px;
+}
+
 
 .header-content .row .col-lg-6, .action .row .col-lg-6{
   position: relative;
@@ -180,7 +184,7 @@ section{
 }
 
 .section-explanation{
-  font-size: 20px;
+  font-size: 30px;
   text-align: center;
   padding: 0 30px;
   margin-bottom: 30px;
@@ -235,16 +239,31 @@ hr{
   margin: 20px;
   font-style: italic;
   font-weight: 600;
-  font-size: 21px;
+  font-size: 20px;
   font-family: Arial;
 }
 .review-photo-1{
   height: 190px;
-  background-image: url(../image/20160801022602.jpg);
+  background-image: url(../image/reviewers/grokLuEuie8.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
+.review-photo-2{
+  height: 190px;
+  background-image: url(../image/reviewers/oMU0Rh0tkOo.jpg);
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.review-photo-3{
+  height: 190px;
+  background-image: url(../image/reviewers/zisxpJmavTE.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .review{
   min-height: 190px;
   background: #2c2a2a;
@@ -292,4 +311,29 @@ hr{
   right: 20px;
   top: 5px;
   font-size: 20px;
+}
+.section-text{
+  padding: 0 6.6%;
+  text-align: center;
+  font: 34px Arial;
+}
+.description-product-text{
+  padding: 0 3%;
+  text-align: justify;
+  font: 26px Arial;
+}
+#description li{
+  padding-left: 15px;
+}
+.emphasis{
+  color: rgb(187, 13, 77); 
+}
+#ordering .row div{
+  font: 25px "Arial";
+}
+#ordering .row div img{
+  margin-bottom: 10px;
+}
+footer ul li{
+  font: 18px "Arial";
 }
