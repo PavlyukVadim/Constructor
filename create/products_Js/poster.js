@@ -1,1 +1,3 @@
-function createPoster() {};
+function createPoster() {
+
+};

@@ -3,227 +3,205 @@
 <head>
 	<title>Конструктор</title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="/create/style/style.css">
-	<link rel="stylesheet" href="/create/style/fonts.css">
+	<link rel="stylesheet" href="./create/style/style.css">
+	<link rel="stylesheet" href="./create/style/fonts.css">
     
-    <script src="/create/libs/jquery-3.0.0.min.js"></script>
-    <script src="/create/libs/fabric.min.js" defer></script>
-    <script src="/create/constructor.js" defer></script>
-    <script src="/create/products_Js/case.js" defer></script>
-    <script src="/create/products_Js/tshirt.js" defer></script>
-    <script src="/create/products_Js/tankTop.js" defer></script>
-    <script src="/create/products_Js/pillow.js" defer></script>
-    <script src="/create/products_Js/poster.js" defer></script>
-    <script src="/create/products_Js/puzzle.js" defer></script>
-    <script src="/create/products_Js/ceramicMug.js" defer></script>
-    
-    <script src="/create/libs/jscolor.js" defer></script>
-    <script src="/create/libs/color-thief.js" defer></script>
-    <script src="/create/libs/handlebars-v4.0.5.js" defer></script>
-    
+  <script src="./create/libs/jquery-3.0.0.min.js"></script>
+  <script src="./create/libs/fabric.min.js" defer></script>
+  <script src="./create/constructor.js" defer></script>
+  <script src="./create/products_Js/case.js" defer></script>
+  <script src="./create/products_Js/tshirt.js" defer></script>
+  <script src="./create/products_Js/tankTop.js" defer></script>
+  <script src="./create/products_Js/pillow.js" defer></script>
+  <script src="./create/products_Js/poster.js" defer></script>
+  <script src="./create/products_Js/puzzle.js" defer></script>
+  <script src="./create/products_Js/ceramicMug.js" defer></script>
+  
+  <script src="./create/libs/jscolor.js" defer></script>
+  <script src="./create/libs/color-thief.js" defer></script>
+  <script src="./create/libs/handlebars-v4.0.5.js" defer></script> 
 </head>
 <body>
-    <div id="edit-area">
-        <div class="app">
-            <nav>
-                <ul id="controls">
-                    <li class="capt capt-select">Выберите</li>
-                    <li class="btn icon base">Предмет</li>
-                    <li class="btn icon model">Модель</li>
-                    <li class="btn icon color">Color</li>
-                    <li class="btn icon type">Type</li>
-                    <li class="btn icon size">Size</li>  
-                    <li class="btn icon material">Material </li>        
-                    <li class="btn icon count-fragments">Number of pieces</li>                
-                    <li class="btn icon causing">Tehnology</li>                
-                    <li class="capt capt-add mt20">Добавьте</li>
-                    <li class="btn icon image">Картинку</li>
-                    <li class="btn icon text">Текст</li>
-                    <li class="btn orange icon order">Заказать</li>
-                    <li class="btn icon clean">Очистить</li>
-                </ul>
-            </nav>
-
-            <div class="ribbon">
-                <div class="in">
-                    <span>Выбрано: </span>
-                    <div class="base"></div>
-                    <div class="model"></div>
-                    <div class="type"></div>
-                    <div class="color"></div>
-                    <div class="size"></div>
-                    <div class="material"></div>
-                    <div class="count-fragments"></div>
-                    <div class="causing"></div>
-                </div>
-            </div>
-            
-            <div id="items" class="product-module module" style="display:block">
-                <p id="products-title">Products</p>
-                <div class="closer"></div>
-               
-                <div class="item" id="mouse-pad">
-                    <img src="/create/images/Poster.png">
-                    <p class="item-name">MousePad</p>
-                </div>
-                
-                <div class="item" id="pillow" data-controls="material,size">
-                    <img src="/create/images/pillow.png">
-                    <p class="item-name">Pillow</p>
-                </div>
-                
-                <div class="item" id="shirt" data-controls="size,type">
-                    <img src="/create/images/shirt.png">
-                    <p class="item-name">Tank Top</p>
-                </div>
-                
-                <div class="item" id="t-shirt" data-controls="type,color,size">
-                    <img src="/create/images/T-shirt.png">
-                    <p class="item-name">T-Shirt</p>
-                </div>
-                
-                <div class="item" id="case" data-controls="causing,color,model">
-                    <img src="/create/images/case.png">
-                    <p class="item-name">Case</p>
-                </div>    
-                
-                 <div class="item" id="plate" data-controls="size">
-                    <img src="/create/images/plate.png">
-                    <p class="item-name">Ceramic Plate</p>
-                </div> 
-                
-                <div class="item" id="cup" data-controls="model,color">
-                    <img src="/create/images/cup.png">
-                    <p class="item-name">Ceramic Mug</p>
-                </div>
-                
-                
-                <div class="item" id="magnet" data-controls="size">
-                    <img src="/create/images/Poster.png">
-                    <p class="item-name">Fridge Magent</p>
-                </div>
-                
-                <div class="item" id="puzzle" data-controls="size,count-fragments">
-                    <img src="/create/images/Poster.png">
-                    <p class="item-name">Puzzle</p>
-                </div>
-                
-                 <div class="item" id="poster" data-controls="material,size">
-                    <img src="/create/images/Poster.png">
-                    <p class="item-name">Poster</p>
-                </div>
-                
-                <!--<div class="item" id="key-ring">
-                    <img src="images/Poster.png">
-                    <p class="item-name">Брелок</p>
-                </div>-->
-               
-                <!--<div class="item" id="cap" data-controls="color">
-                    <img src="images/cap.png">
-                    <p class="item-name">Кепка</p>-->
-                </div> 
-                <div class="clear"></div>
-            </div>
-            
-            <div id="model" class="module" style="display:none">
-                <p id="type-title">Выберите модель:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="type" class="module" style="display:none">
-                <p id="type-title">Выберите тип:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="material" class="text-module" style="display:none">
-                <p id="type-title">Выберите материал:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="count-fragments" class="text-module" style="display:none">
-                <p id="type-title">Выберите количество фрагментов:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="causing" class="text-module" style="display:none">
-                <p id="type-title">Выберите тип нанесения:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="size" class="text-module" style="display:none">
-                <p id="type-title">Выберите размер:</p>
-                <div class="closer"></div>
-            </div>
-            <div id="images" class="module" style="display:none">
-                <p id="type-title">Выберите картинку:</p>
-                <div class="closer"></div>
-                <input type="file" id="choose-file">
-            </div>
-            <div id="colors" class="module" style="display:none">
-                <p id="type-title">Выберите цвет заготовки:</p>
-                <br>
-                <div class="closer"></div>
-                <ul id="color-list">
-                </ul>
-            </div>
-            
-            
-            <script id="colorT" type="text/x-handlebars-template">
-                <li>
-                    <div>
-                        <div class="example" id={{color}}></div>
-                        <p>{{color}}</p>
-                    </div>
-                    <div class="clear"></div>
-                </li>
-            </script>
-
-            
-            <div class="widgets">
-                <div class="widget widget-layers">
-                    <h3>Детали композиции</h3>
-                    <div class="layers-list">
-                   </div>
-                </div>
-                <div class="widget widget-text">
-                    <h3 class="crumbs" >Детали композиции</h3>
-                    <textarea id="input-text">Мой текст</textarea>
-                    <div class="operate">
-                        <button id="text-copy" class="btn">Copy</button>
-                        <button id="text-delete" class="btn">Delete</button>
-                    </div>
-                    <div class="font-params clearfix">
-                        <a class="btn font" href="#">Шрифт</a>
-                        <a class="btn-white bold active" href="#">Ж</a>
-                        <a class="btn-white italic" href="#">К</a>
-                        <a class="btn-white underline" href="#">Ч</a>
-                    </div>
-                    <div class="text-align clearfix">
-                        <a class="btn-white align-left active" href="#"></a>
-                        <a class="btn-white align-center" href="#"></a>
-                        <a class="btn-white align-right" href="#"></a>
-                    </div>
-                    <div id="text-color">
-                        <p id="type-title">Выберите цвет заготовки:</p>
-                        <input id="text-color-input" class="jscolor" data-jscolor="{padding:10, borderWidth:3}">
-                    </div>
-                    
-
-                    <div id="fonts">
-                        <ul class="font-list">
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget widget-image">
-                    <h3 class="crumbs" >Детали композиции</h3>
-                    <div class="current-image">
-                        <img id="current-image">
-                    </div>
-                    <div class="operate">
-                        <button id="image-copy" class="btn">Copy</button>
-                        <button id="image-delete" class="btn">Delete</button>
-                    </div>
-                </div>
-         
+  <div id="edit-area">
+    <div class="app">
+      <nav>
+        <ul id="controls">
+          <li class="capt capt-select">Выберите</li>
+          <li class="btn icon base">Предмет</li>
+          <li class="btn icon model">Модель</li>
+          <li class="btn icon color">Color</li>
+          <li class="btn icon type">Type</li>
+          <li class="btn icon size">Size</li>
+          <li class="btn icon material">Material </li>
+          <li class="btn icon count-fragments">Number of pieces</li>
+          <li class="btn icon causing">Tehnology</li>
+          <li class="capt capt-add mt20">Добавьте</li>
+          <li class="btn icon image">Картинку</li>
+          <li class="btn icon text">Текст</li>
+          <li class="btn orange icon order">Заказать</li>
+          <li class="btn icon clean">Очистить</li>
+        </ul>
+      </nav>
+      <div class="ribbon">
+        <div class="in">
+          <span>Выбрано: </span>
+          <div class="base"></div>
+          <div class="model"></div>
+          <div class="type"></div>
+          <div class="color"></div>
+          <div class="size"></div>
+          <div class="material"></div>
+          <div class="count-fragments"></div>
+          <div class="causing"></div>
         </div>
-            <div id="canvases">
-            <canvas id="canvas"></canvas>
+      </div>
+      <div id="items" class="product-module module" style="display:block">
+        <p id="products-title">Products</p>
+        <div class="closer"></div>
+        <div class="item" id="mouse-pad">
+          <img src="/create/images/Poster.png">
+          <p class="item-name">MousePad</p>
         </div>
+        <div class="item" id="pillow" data-controls="material,size">
+          <img src="/create/images/pillow.png">
+          <p class="item-name">Pillow</p>
+        </div>
+        <div class="item" id="shirt" data-controls="size,type">
+          <img src="/create/images/shirt.png">
+          <p class="item-name">Tank Top</p>
+        </div>
+        <div class="item" id="t-shirt" data-controls="type,color,size">
+          <img src="/create/images/T-shirt.png">
+          <p class="item-name">T-Shirt</p>
+        </div>
+        <div class="item" id="case" data-controls="causing,color,model">
+          <img src="/create/images/case.png">
+          <p class="item-name">Case</p>
+        </div>    
+        <div class="item" id="plate" data-controls="size">
+          <img src="/create/images/plate.png">
+          <p class="item-name">Ceramic Plate</p>
+        </div> 
+        <div class="item" id="cup" data-controls="model,color">
+          <img src="/create/images/cup.png">
+          <p class="item-name">Ceramic Mug</p>
+        </div>
+        <div class="item" id="magnet" data-controls="size">
+          <img src="/create/images/Poster.png">
+          <p class="item-name">Fridge Magent</p>
+        </div>
+        <div class="item" id="puzzle" data-controls="size,count-fragments">
+          <img src="/create/images/Poster.png">
+          <p class="item-name">Puzzle</p>
+        </div>
+        <div class="item" id="poster" data-controls="material,size">
+          <img src="/create/images/Poster.png">
+          <p class="item-name">Poster</p>
+        </div>
+        <!--<div class="item" id="key-ring">
+            <img src="images/Poster.png">
+            <p class="item-name">Брелок</p>
+        </div>-->
+       
+        <!--<div class="item" id="cap" data-controls="color">
+            <img src="images/cap.png">
+            <p class="item-name">Кепка</p>-->
+        </div> 
+        <div class="clear"></div>
+      </div>
+            
+      <div id="model" class="module" style="display:none">
+        <p id="type-title">Выберите модель:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="type" class="module" style="display:none">
+        <p id="type-title">Выберите тип:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="material" class="text-module" style="display:none">
+        <p id="type-title">Выберите материал:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="count-fragments" class="text-module" style="display:none">
+        <p id="type-title">Выберите количество фрагментов:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="causing" class="text-module" style="display:none">
+        <p id="type-title">Выберите тип нанесения:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="size" class="text-module" style="display:none">
+        <p id="type-title">Выберите размер:</p>
+        <div class="closer"></div>
+      </div>
+      <div id="images" class="module" style="display:none">
+        <p id="type-title">Выберите картинку:</p>
+        <div class="closer"></div>
+        <input type="file" id="choose-file">
+      </div>
+      <div id="colors" class="module" style="display:none">
+        <p id="type-title">Выберите цвет заготовки:</p>
+        <br>
+        <div class="closer"></div>
+        <ul id="color-list"></ul>
+      </div>
+
+      <script id="colorT" type="text/x-handlebars-template">
+        <li>
+          <div>
+            <div class="example" id={{color}}></div>
+            <p>{{color}}</p>
+          </div>
+          <div class="clear"></div>
+        </li>
+      </script>
+          
+      <div class="widgets">
+        <div class="widget widget-layers">
+          <h3>Детали композиции</h3>
+          <div class="layers-list"></div>
+        </div>
+        <div class="widget widget-text">
+          <h3 class="crumbs" >Детали композиции</h3>
+          <textarea id="input-text">Мой текст</textarea>
+          <div class="operate">
+            <button id="text-copy" class="btn">Copy</button>
+            <button id="text-delete" class="btn">Delete</button>
+          </div>
+          <div class="font-params clearfix">
+            <a class="btn font" href="#">Шрифт</a>
+            <a class="btn-white bold active" href="#">Ж</a>
+            <a class="btn-white italic" href="#">К</a>
+            <a class="btn-white underline" href="#">Ч</a>
+          </div>
+          <div class="text-align clearfix">
+            <a class="btn-white align-left active" href="#"></a>
+            <a class="btn-white align-center" href="#"></a>
+            <a class="btn-white align-right" href="#"></a>
+          </div>
+          <div id="text-color">
+            <p id="type-title">Выберите цвет заготовки:</p>
+            <input id="text-color-input" class="jscolor" data-jscolor="{padding:10, borderWidth:3}">
+          </div>
+          <div id="fonts">
+            <ul class="font-list">
+            </ul>
+          </div>
+        </div>
+        <div class="widget widget-image">
+          <h3 class="crumbs" >Детали композиции</h3>
+          <div class="current-image">
+            <img id="current-image">
+          </div>
+          <div class="operate">
+            <button id="image-copy" class="btn">Copy</button>
+            <button id="image-delete" class="btn">Delete</button>
+          </div>
+        </div>
+      </div>
+      <div id="canvases">
+        <canvas id="canvas"></canvas>
+      </div>
     </div>
 </body>
 </html>

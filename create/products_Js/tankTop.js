@@ -1,3 +1,3 @@
 function createTankTop() {
-    $("#colors, .color").css("display", "none");       
+  $('#colors, .color').css('display', 'none');       
 }

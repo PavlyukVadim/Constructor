@@ -1,1 +1,3 @@
-function createCeramicMug() {};
+function createCeramicMug() {
+
+};
