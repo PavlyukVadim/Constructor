@@ -1,63 +1,59 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="fonts.css">
-        
-        <script src="libs/jquery-3.0.0.min.js"></script>
-        <script src="libs/fabric.js"></script>
-        <script src="libs/jscolor.min.js"></script>
-        <script src="common.js" defer></script>
-        
-    </head>
-    <body>
-        <div id="controls">
-            <div class="item">
-                <input id="files" type="file" multiple>
-                <p>Виберіть всі фото</p>
-            </div>
-            <div class="item">
-                <input id="logo" type="file">
-                <p>Завантажити логотип</p>
-            </div>
-            <div class="item">
-                <input id="add-text" type="button" value="Добавити текст">
-                <p>текст</p>
-            </div>
-            <div class="item">
-                <div id="downloads">
-                </div>
-                <p>Скачати фото</p>
-            </div>
-            <div class="item">
-                <input id="count-photo" type="number" min="1" value="2">
-                <p>к-сть фото на 1 екрані</p>
-            </div>
-            <div class="clear"></div>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="fonts.css">
+    <script src="libs/jquery-3.0.0.min.js"></script>
+    <script src="libs/fabric.js"></script>
+    <script src="libs/jscolor.min.js"></script>
+    <script src="common.js" defer></script>
+  </head>
+  <body>
+    <div id="controls">
+      <div class="item">
+        <input id="files" type="file" multiple>
+        <p>Виберіть всі фото</p>
+      </div>
+      <div class="item">
+        <input id="logo" type="file">
+        <p>Завантажити логотип</p>
+      </div>
+      <div class="item">
+        <input id="add-text" type="button" value="Добавити текст">
+        <p>текст</p>
+      </div>
+      <div class="item">
+        <div id="downloads">
         </div>
-        <div id="edit-field">
-            <canvas id="edit-canvas"></canvas>
-        </div>
-        <div id="canvases">
-        </div>
-        <div class="widget widget-text">
-            <textarea id="input-text">Мой текст</textarea>
-            <div class="font-params clearfix">
-                <a class="btn font" href="#">Шрифт</a>
-                <a class="btn-white bold active" href="#">Ж</a>
-                <a class="btn-white italic" href="#">К</a>
-                <a class="btn-white underline" href="#">Ч</a>
-            </div>
-            <div id="text-color">
-                <p id="type-title">Выберите цвет заготовки:</p>
-                <input id="text-color-input" class="jscolor" data-jscolor="{padding:10, borderWidth:3}">
-            </div>
-            <div id="fonts">
-                <ul class="font-list">
-                </ul>
-            </div>
-        </div>
-        
-    </body>    
+        <p>Скачати фото</p>
+      </div>
+      <div class="item">
+        <input id="count-photo" type="number" min="1" value="2">
+        <p>к-сть фото на 1 екрані</p>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div id="edit-field">
+      <canvas id="edit-canvas"></canvas>
+    </div>
+    <div id="canvases"></div>
+    <div class="widget widget-text">
+      <textarea id="input-text">Мой текст</textarea>
+      <div class="font-params clearfix">
+        <a class="btn font" href="#">Шрифт</a>
+        <a class="btn-white bold active" href="#">Ж</a>
+        <a class="btn-white italic" href="#">К</a>
+        <a class="btn-white underline" href="#">Ч</a>
+      </div>
+      <div id="text-color">
+        <p id="type-title">Выберите цвет заготовки:</p>
+        <input id="text-color-input" class="jscolor" data-jscolor="{padding:10, borderWidth:3}">
+      </div>
+      <div id="fonts">
+        <ul class="font-list">
+        </ul>
+      </div>
+    </div>
+  </body>    
 </html>
